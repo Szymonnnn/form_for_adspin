@@ -1,42 +1,27 @@
-/******* GENERAL *******/
-
-/*
-			COLORS
-
-PRIMARY-HOVER:		#0C3D83
-PRIMARY:			#0F71D9
-PRIMARY-DISABLE:	#4994DB
-
- */
-
-/*
-	BOOSTSTRAP ORIGINAL COLORS
-
-PRIMARY-HOVER:		#0069D9
-PRIMARY:			#007BFF
-PRIMARY-DISABLE:	#58AAFF
-
- */
-
+/******* COLORS *******/
 :root
 {
-  /* --dark_blue:	#0C3D83; */
-  /* --blue: 		#0F71D9; */
-  --light_blue:	#4994DB;
+	--whiter:		#fdfeff;
+  	--almost_black:	#303030;
+  	--dark_blue:	#0C3D83;
+  	--blue: 		#0F71D9;
+  	--light_blue:	#4994DB;
+	--light_green:	#C0D06F;
 }
 
 
+/******* GENERAL *******/
 body
 {
 	background-color: var(--light_blue);
-	color: #303030;
+	color: var(--almost_black);
     font-family: 'Open Sans', sans-serif;
     font-size: 17px;
 }
 
 main
 {
-	background-color: #fdfeff;
+	background-color: var(--whiter);
 	max-width: var(--breakpoint-xl);
 }
 
@@ -44,7 +29,7 @@ h1
 {
 	font-size: 36px;
 	font-weight: 400;
-	color: #C0D06F;
+	color: var(--light_green);
 	margin: 20px;
 }
 
@@ -57,18 +42,17 @@ h1
 	z-index: 1;
 }
 
-
-
-
-
-/* ??? */
-.bg-color
+.btn-primary.disabled, .btn-primary:disabled
 {
-	background-color: #1e76c9 !important;
+	opacity: 1;
+	background-color: var(--light_blue);
+	border-color: var(--light_blue);
 }
 
-
-
+.bg-color-blue
+{
+	background-color: var(--blue);
+}
 
 
 /******* FORM *******/
