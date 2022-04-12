@@ -18,16 +18,17 @@ PRIMARY-DISABLE:	#58AAFF
 
  */
 
-/* :root
+:root
 {
-  --dark_blue:	#0C3D83;
-  --blue: 		#0F71D9;
+  /* --dark_blue:	#0C3D83; */
+  /* --blue: 		#0F71D9; */
   --light_blue:	#4994DB;
-} */
+}
+
 
 body
 {
-	background-color: #fdfeff;
+	background-color: var(--light_blue);
 	color: #303030;
     font-family: 'Open Sans', sans-serif;
     font-size: 17px;
@@ -35,7 +36,8 @@ body
 
 main
 {
-	/* background-color: var(--light_blue) */
+	background-color: #fdfeff;
+	max-width: var(--breakpoint-xl);
 }
 
 h1
@@ -49,12 +51,24 @@ h1
 .navbar
 {
 	min-height: 57px;
+	position: sticky;
+	position: -webkit-sticky;
+	top: 0;
+	z-index: 1;
 }
 
+
+
+
+
+/* ??? */
 .bg-color
 {
 	background-color: #1e76c9 !important;
 }
+
+
+
 
 
 /******* FORM *******/
@@ -87,7 +101,10 @@ h1
 
 
 /******* LISTING *******/
-.ads-grid figure img
+
+.ads-grid .row > [class*="col-"] > img
 {
+	/* display: inline-block; */
 	max-width: 100%;
+	/* max-height: 100%; */
 }
