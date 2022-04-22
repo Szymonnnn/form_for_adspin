@@ -1,0 +1,166 @@
+/******* COLORS *******/
+:root
+{
+	--whiter:		#fdfeff;
+  	--almost_black:	#303030;
+  	--dark_blue:	#0C3D83;
+  	--blue: 		#0F71D9;
+  	--light_blue:	#4994DB;
+	--light_green:	#C0D06F;
+}
+
+
+/******* GENERAL *******/
+body
+{
+	background-color: var(--light_blue);
+	color: var(--almost_black);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 17px;
+}
+
+main
+{
+	background-color: var(--whiter);
+	max-width: var(--breakpoint-xl);
+}
+
+h1
+{
+	font-size: 36px;
+	font-weight: 400;
+	color: var(--light_green);
+	margin: 20px;
+}
+
+.navbar
+{
+	min-height: 57px;
+	position: sticky;
+	position: -webkit-sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.btn-primary.disabled, .btn-primary:disabled
+{
+	opacity: 1;
+	background-color: var(--light_blue);
+	border-color: var(--light_blue);
+}
+
+.bg-color-blue
+{
+	background-color: var(--blue);
+}
+
+
+/******* FORM *******/
+
+.inputs
+{
+	text-align: left;
+}
+
+.inputs img
+{
+	width: 100%;
+	height: auto;
+}
+
+.inputs p
+{
+	margin-bottom: 30px;
+}
+
+.inputs figcaption
+{
+	margin-top: 8px;
+}
+
+.name
+{
+	text-align: left;
+}
+
+
+/******* LISTING *******/
+
+.ads-grid .row > [class*="col-"] > img
+{
+	/* display: inline-block; */
+	max-width: 100%;
+	/* max-height: 100%; */
+}
+
+.glyphicon-heart-contour::after
+{
+	/* content: "♡"; */
+	content: url("../icons/heart-contour.svg");
+}
+
+.glyphicon-heart-fill::after
+{
+	/* content: "♥︎"; */
+	content: url("../icons/heart-fill.svg");
+}
+
+.like-button
+{
+	display: block;
+	position: absolute;
+	top: 0;
+	padding: 0.5rem;
+
+	mix-blend-mode: exclusion;
+
+	background: none;
+	border: none;
+}
+
+.like-button::after
+{
+	display: block;
+	width: 3rem;
+}
+
+.like-button:focus
+{
+	outline: none;
+}
+
+
+@media (hover: none)
+{
+	.ads-grid .row > [class*="col-"] > .glyphicon-heart-contour
+	{
+		opacity: 1;
+		pointer-events: none;
+	}
+	.ads-grid .row > [class*="col-"] > .like-button
+	{
+		pointer-events: none;
+	}
+	.ads-grid .row > [class*="col-"]
+	{
+		touch-action: pinch-zoom pan-x pan-y;
+	}
+}
+
+@media (hover: hover)
+{
+	.ads-grid .row > [class*="col-"]:hover
+	{
+		opacity: 0.8;
+	}
+
+	.ads-grid .row > [class*="col-"] > .glyphicon-heart-contour
+	{
+		opacity: 0;
+	}
+
+	.ads-grid .row > [class*="col-"]:hover > .glyphicon-heart-contour
+	{
+		opacity: 1;
+	}
+}
