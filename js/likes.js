@@ -54,7 +54,7 @@ function toggle_like(like_button)
 
 function send_feedback(id, state)
 {
-    console.log(SESSION_TOKEN);
+    console.log("the user " + SESSION_TOKEN + " " + (state ? "liked" : "disliked") + " the ad with id = " + id);
     // alert("the user " + (state ? "liked" : "disliked") + " the ad with id = " + id);
     // TODO: a request to django containing ad id and state (bool indicating whether i was liked)
 }
