@@ -55,25 +55,35 @@ h1
 }
 
 
+#inputs, #ads-grid
+{
+	display: none;
+}
+
+:is(#inputs, #ads-grid).tab-active
+{
+	display: block;
+}
+
 /******* FORM *******/
 
-.inputs
+#inputs
 {
 	text-align: left;
 }
 
-.inputs img
+#inputs img
 {
 	width: 100%;
 	height: auto;
 }
 
-.inputs p
+#inputs p
 {
 	margin-bottom: 30px;
 }
 
-.inputs figcaption
+#inputs figcaption
 {
 	margin-top: 8px;
 }
@@ -83,10 +93,14 @@ h1
 	text-align: left;
 }
 
+#generate-btn
+{
+	width: 100%;
+}
 
 /******* LISTING *******/
 
-.ads-grid .row > [class*="col-"] > img
+#ads-grid .row > [class*="col-"] > img
 {
 	/* display: inline-block; */
 	max-width: 100%;
@@ -132,16 +146,16 @@ h1
 
 @media (hover: none)
 {
-	.ads-grid .row > [class*="col-"] > .glyphicon-heart-contour
+	#ads-grid .row > [class*="col-"] > .glyphicon-heart-contour
 	{
 		opacity: 1;
 		pointer-events: none;
 	}
-	.ads-grid .row > [class*="col-"] > .like-button
+	#ads-grid .row > [class*="col-"] > .like-button
 	{
 		pointer-events: none;
 	}
-	.ads-grid .row > [class*="col-"]
+	#ads-grid .row > [class*="col-"]
 	{
 		touch-action: pinch-zoom pan-x pan-y;
 	}
@@ -149,17 +163,17 @@ h1
 
 @media (hover: hover)
 {
-	.ads-grid .row > [class*="col-"]:hover
+	#ads-grid .row > [class*="col-"]:hover
 	{
 		opacity: 0.8;
 	}
 
-	.ads-grid .row > [class*="col-"] > .glyphicon-heart-contour
+	#ads-grid .row > [class*="col-"] > .glyphicon-heart-contour
 	{
 		opacity: 0;
 	}
 
-	.ads-grid .row > [class*="col-"]:hover > .glyphicon-heart-contour
+	#ads-grid .row > [class*="col-"]:hover > .glyphicon-heart-contour
 	{
 		opacity: 1;
 	}
