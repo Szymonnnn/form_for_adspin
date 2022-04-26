@@ -55,12 +55,12 @@ h1
 }
 
 
-#inputs, #ads-grid
+#inputs, #ads_grid
 {
 	display: none;
 }
 
-:is(#inputs, #ads-grid).tab-active
+:is(#inputs, #ads_grid).tab-active
 {
 	display: block;
 }
@@ -100,7 +100,7 @@ h1
 
 /******* LISTING *******/
 
-#ads-grid .row > [class*="col-"] > img
+#ads_grid .row > [class*="col-"] > img
 {
 	/* display: inline-block; */
 	max-width: 100%;
@@ -146,16 +146,16 @@ h1
 
 @media (hover: none)
 {
-	#ads-grid .row > [class*="col-"] > .glyphicon-heart-contour
+	#ads_grid .row > [class*="col-"] > .glyphicon-heart-contour
 	{
 		opacity: 1;
 		pointer-events: none;
 	}
-	#ads-grid .row > [class*="col-"] > .like-button
+	#ads_grid .row > [class*="col-"] > .like-button
 	{
 		pointer-events: none;
 	}
-	#ads-grid .row > [class*="col-"]
+	#ads_grid .row > [class*="col-"]
 	{
 		touch-action: pinch-zoom pan-x pan-y;
 	}
@@ -163,17 +163,17 @@ h1
 
 @media (hover: hover)
 {
-	#ads-grid .row > [class*="col-"]:hover
+	#ads_grid .row > [class*="col-"]:hover
 	{
 		opacity: 0.8;
 	}
 
-	#ads-grid .row > [class*="col-"] > .glyphicon-heart-contour
+	#ads_grid .row > [class*="col-"] > .glyphicon-heart-contour
 	{
 		opacity: 0;
 	}
 
-	#ads-grid .row > [class*="col-"]:hover > .glyphicon-heart-contour
+	#ads_grid .row > [class*="col-"]:hover > .glyphicon-heart-contour
 	{
 		opacity: 1;
 	}

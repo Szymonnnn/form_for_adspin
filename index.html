@@ -71,166 +71,52 @@
 			<section id="inputs" :class="{ 'tab-active': active_tab === 'form' }">
 
 				<div class="container">
-
-					<header>
-						<p></p>
-
-					</header>
-
 					<div class="row">
 
 						<div class="form-group col-md-6">
 							<label for="name_of_company" class="name">What you want to advertise?</label>
-							<input id="name_of_company" type="text" class="form-control" id="name_of_company" placeholder="adspin" name="name_of_company">
+							<input v-model="name_of_company" id="name_of_company" type="text" class="form-control" placeholder="adspin" name="name_of_company">
 						</div>
 
 						<div class="form-group col-md-6">
 							<label for="key_features" class="name">Name three key features of your product</label>
-							<input id="key_features" type="text" class="form-control" placeholder="fast, fresh, effective" name="key_features">
+							<input  v-model="key_features" id="key_features" type="text" class="form-control" placeholder="fast, fresh, effective" name="key_features">
 						</div>
 
 						<div class="form-group col-md-12">
 							<label for="description">Describe your company in a few words</label>
-							<textarea id="description" type="text" class="form-control" rows="8" name="description" placeholder="We are a web service that will make your ads spin faster than ever. Our team believes proper advertising is the key to succes. Give it a go and create a custom ad - it's free"></textarea>
+							<textarea  v-model="description" id="description" type="text" class="form-control" rows="8" name="description" placeholder="We are a web service that will make your ads spin faster than ever. Our team believes proper advertising is the key to succes. Give it a go and create a custom ad - it's free"></textarea>
 						</div>
 
 
 						<div class="form-group col-12 col-md-2">
-							<button id="generate-btn" type="button" class="btn btn-primary" @click="post_form">Generate</button>
+							<button id="generate-btn" type="button" class="btn btn-primary" @click="generate_button_click">Generate</button>
 						</div>
 
 					</div>
 				</div>
 			</section>
 
-			<section id="ads-grid" :class="{ 'tab-active': active_tab === 'listing' }">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-					</div>
+			<section id="ads_grid" :class="{ 'tab-active': active_tab === 'listing' }">
+				<!-- <div class="container-fluid">
+
 					<div class="row gy-3">
 						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
 							<img src="img/ad_sq.png" alt="sample ad">
 							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
 							</button>
 						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
+					</div>
+				</div> -->
+				<div class="container-fluid">
+					<div class="row gy-3" v-for="ads_row in ads">
+						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2" v-for="ad in ads_row">
 							<img src="img/ad_sq.png" alt="sample ad">
 							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
 							</button>
 						</div>
 					</div>
 				</div>
-
 			</section>
 		</main>
 	</div>
@@ -255,11 +141,28 @@ const TABS =
 	 listing: () => console.log("listing")
 }
 
+function dummy_ads_row()
+{
+	ad =
+	{
+		"ad_id": generate_token(),
+		"user_id": SESSION_TOKEN,
+		"img_url": "img/ad_sq.png",
+		"liked": false
+	};
+
+	return [ad, ad, ad];
+}
+
 Vue.createApp(
 {
 	data() {
   return {
-	active_tab: 'form'
+	active_tab: 'form',
+	name_of_company: '',
+	key_features: '',
+	description: '',
+	ads: []
   }
 },
 	mounted()
@@ -283,11 +186,37 @@ Vue.createApp(
 		},
 		post_form()
 		{
-			console.log("posting the form from user " + SESSION_TOKEN);
-			this.active_tab = 'listing';
-			window.history.pushState('listing', 'adspin', '#/listing');
-			// load  ads
-		}
+			// post form
+			let form_data =
+			{
+				"user_id": SESSION_TOKEN,
+				"name_of_company": this.name_of_company,
+				"key_features": this.key_features,
+				"description": this.description
+			};
+			console.log("posting the form from the user");
+			console.log(form_data);
+		},
+		generate_button_click()
+		{
+			this.post_form();
+			window.location.hash = '/listing'; // redirect
+			this.ads = []; // clear the listing
+			this.update_listing(); // load ads
+		},
+		update_listing(ads)
+		{
+			// TODO: replace dummy_ads_row() with a real (ascync) request
+			console.log("making an ad load request from the user " + SESSION_TOKEN);
+			this.ads.push(dummy_ads_row(), dummy_ads_row());
+			console.log(this.ads);
+		},
+		lazy_load_ads() // function called by the observer
+		{
+			// enable lazy loading only after first form post
+			if(this.ads !== [])
+				this.update_listing(); // load ads
+		},
 	}
 
 }).mount('#app')
