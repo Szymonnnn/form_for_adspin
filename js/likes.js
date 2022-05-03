@@ -1,4 +1,4 @@
-var latest_tap;
+var latest_tap_time;
 var previous_tap_target;
 
 window.addEventListener("load", function()
@@ -21,7 +21,7 @@ window.addEventListener("load", function()
 function doubletap(event, like_button)
 {
     var now = new Date().getTime();
-    var time_delta = now - latest_tap;
+    var time_delta = now - latest_tap_time;
 
     if((time_delta < 600) && time_delta > 100)
     {
@@ -30,13 +30,13 @@ function doubletap(event, like_button)
         {
             event.preventDefault();
             toggle_like(like_button);
-            latest_tap -= 600; // prevent from retriggering the event
+            latest_tap_time -= 600; // prevent from retriggering the event
         }
     }
     else
     {
         // too little or much time to be a double tap
-        latest_tap = new Date().getTime();
+        latest_tap_time = new Date().getTime();
     }
     previous_tap_target = event.target;
 }
@@ -46,8 +46,6 @@ function toggle_like(like_button)
 {
     liked = !(like_button.getAttribute("liked") === "true");
     like_button.setAttribute("liked", liked);
-    like_button.classList.toggle("glyphicon-heart-contour");
-    like_button.classList.toggle("glyphicon-heart-fill");
 
     send_feedback(like_button.getAttribute("ad_id"), liked);
 }

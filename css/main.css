@@ -107,13 +107,13 @@ h1
 	/* max-height: 100%; */
 }
 
-.glyphicon-heart-contour::after
+.like-button[liked=false]::after
 {
 	/* content: "♡"; */
 	content: url("../icons/heart-contour.svg");
 }
 
-.glyphicon-heart-fill::after
+.like-button[liked=true]::after
 {
 	/* content: "♥︎"; */
 	content: url("../icons/heart-fill.svg");
@@ -146,7 +146,7 @@ h1
 
 @media (hover: none)
 {
-	#ads_grid .row > [class*="col-"] > .glyphicon-heart-contour
+	#ads_grid .row > [class*="col-"] > .like-button[liked=false]
 	{
 		opacity: 1;
 		pointer-events: none;
@@ -168,12 +168,12 @@ h1
 		opacity: 0.8;
 	}
 
-	#ads_grid .row > [class*="col-"] > .glyphicon-heart-contour
+	#ads_grid .row > [class*="col-"] > .like-button[liked=false]
 	{
 		opacity: 0;
 	}
 
-	#ads_grid .row > [class*="col-"]:hover > .glyphicon-heart-contour
+	#ads_grid .row > [class*="col-"]:hover > .like-button[liked=false]
 	{
 		opacity: 1;
 	}

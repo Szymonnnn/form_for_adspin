@@ -31,7 +31,7 @@
 	<script src="https://unpkg.com/vue@3"></script>
 	<!-- <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script> -->
 
-	<script src="js/likes.js"></script>
+	<!-- <script src="js/likes.js"></script> -->
 
 
 
@@ -75,17 +75,17 @@
 
 						<div class="form-group col-md-6">
 							<label for="name_of_company" class="name">What you want to advertise?</label>
-							<input v-model="name_of_company" id="name_of_company" type="text" class="form-control" placeholder="adspin" name="name_of_company">
+							<input v-model="form_data.name_of_company" id="name_of_company" type="text" class="form-control" placeholder="adspin" name="name_of_company">
 						</div>
 
 						<div class="form-group col-md-6">
 							<label for="key_features" class="name">Name three key features of your product</label>
-							<input  v-model="key_features" id="key_features" type="text" class="form-control" placeholder="fast, fresh, effective" name="key_features">
+							<input  v-model="form_data.key_features" id="key_features" type="text" class="form-control" placeholder="fast, fresh, effective" name="key_features">
 						</div>
 
 						<div class="form-group col-md-12">
 							<label for="description">Describe your company in a few words</label>
-							<textarea  v-model="description" id="description" type="text" class="form-control" rows="8" name="description" placeholder="We are a web service that will make your ads spin faster than ever. Our team believes proper advertising is the key to succes. Give it a go and create a custom ad - it's free"></textarea>
+							<textarea  v-model="form_data.description" id="description" type="text" class="form-control" rows="8" name="description" placeholder="We are a web service that will make your ads spin faster than ever. Our team believes proper advertising is the key to succes. Give it a go and create a custom ad - it's free"></textarea>
 						</div>
 
 
@@ -98,21 +98,11 @@
 			</section>
 
 			<section id="ads_grid" :class="{ 'tab-active': active_tab === 'listing' }">
-				<!-- <div class="container-fluid">
-
-					<div class="row gy-3">
-						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
-							</button>
-						</div>
-					</div>
-				</div> -->
 				<div class="container-fluid">
 					<div class="row gy-3" v-for="ads_row in ads">
 						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2" v-for="ad in ads_row">
-							<img src="img/ad_sq.png" alt="sample ad">
-							<button type="button" class="like-button glyphicon-heart-contour" ad_id="1212233213" liked="false">
+							<img :src="ad.img_url" alt="sample ad"  @touchend="ad_touch_service(ad, $event)">
+							<button type="button" class="like-button" :liked="ad.liked" @click="ad_liked_toggle(ad)">
 							</button>
 						</div>
 					</div>
@@ -143,28 +133,40 @@ const TABS =
 
 function dummy_ads_row()
 {
-	ad =
-	{
-		"ad_id": generate_token(),
-		"user_id": SESSION_TOKEN,
-		"img_url": "img/ad_sq.png",
-		"liked": false
-	};
+	ads = []
 
-	return [ad, ad, ad];
+	for (var i = 0; i < 12; i++)
+	{
+		ad =
+		{
+			"id": generate_token(),
+			"img_url": "img/ad_sq.png",
+			"liked": false
+		};
+
+		ads.push(ad);
+	}
+
+	return ads;
 }
 
 Vue.createApp(
 {
 	data() {
-  return {
-	active_tab: 'form',
-	name_of_company: '',
-	key_features: '',
-	description: '',
-	ads: []
-  }
-},
+  	return {
+		active_tab: 'form',
+		form_data:
+		{
+			"user_id": SESSION_TOKEN,
+			name_of_company: '',
+			key_features: '',
+			description: '',
+		},
+		ads: [],
+		latest_tap_time: 0,
+		previous_tap_target: 0
+	}
+	},
 	mounted()
 	{
 		window.addEventListener('hashchange', this.onHashChange)
@@ -187,21 +189,14 @@ Vue.createApp(
 		post_form()
 		{
 			// post form
-			let form_data =
-			{
-				"user_id": SESSION_TOKEN,
-				"name_of_company": this.name_of_company,
-				"key_features": this.key_features,
-				"description": this.description
-			};
 			console.log("posting the form from the user");
-			console.log(form_data);
+			console.log(this.form_data);
 		},
 		generate_button_click()
 		{
 			this.post_form();
 			window.location.hash = '/listing'; // redirect
-			this.ads = []; // clear the listing
+			// this.ads = []; // clear the listing
 			this.update_listing(); // load ads
 		},
 		update_listing(ads)
@@ -216,6 +211,39 @@ Vue.createApp(
 			// enable lazy loading only after first form post
 			if(this.ads !== [])
 				this.update_listing(); // load ads
+		},
+		send_feedback(ad)
+		{
+			console.log("the user " + SESSION_TOKEN + " " + (ad.liked ? "liked" : "disliked") + " the ad with id = " + ad.id);
+		    // alert("the user " + (state ? "liked" : "disliked") + " the ad with id = " + id);
+		    // TODO: a request to django containing ad id and state (bool indicating whether i was liked)
+		},
+		ad_liked_toggle(ad)
+		{
+			ad.liked = !ad.liked;
+			this.send_feedback(ad);
+		},
+		ad_touch_service(ad, event)
+		{
+			var now = new Date().getTime();
+		    var time_delta = now - this.latest_tap_time;
+
+		    if((time_delta < 600) && time_delta > 100)
+		    {
+		        // double tap
+		        if(ad.id === this.previous_tap_target)
+		        {
+		            event.preventDefault();
+					this.ad_liked_toggle(ad);
+		            this.latest_tap_time -= 600; // prevent from retriggering the event
+		        }
+		    }
+		    else
+		    {
+		        // too little or much time to be a double tap
+		        this.latest_tap_time = new Date().getTime();
+		    }
+		    this.previous_tap_target = ad.id;
 		},
 	}
 
