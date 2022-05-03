@@ -31,9 +31,6 @@
 	<script src="https://unpkg.com/vue@3"></script>
 	<!-- <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script> -->
 
-	<!-- <script src="js/likes.js"></script> -->
-
-
 
 </head>
 
@@ -45,11 +42,11 @@
 
 				<a class="navbar-brand" href="#"><img src="img/logo_blank_circle.png" width="30" height="30" class="d-inline-block mr-1 align-bottom" alt=""> adspin</a>
 
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji" id="navbar-tg-btn" @click.stop="toggle_navbar_collapse('main_menu')">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 
-				<div class="collapse navbar-collapse" id="mainmenu">
+				<div class="navbar-collapse" :class="navbar_class_array" :style="navbar_style_object" id="mainmenu" ref="main_menu">
 
 					<ul class="navbar-nav mr-auto">
 
@@ -164,7 +161,10 @@ Vue.createApp(
 		},
 		ads: [],
 		latest_tap_time: 0,
-		previous_tap_target: 0
+		previous_tap_target: 0,
+
+		navbar_class_array: ['collapse'],
+      	navbar_style_object: {}
 	}
 	},
 	mounted()
@@ -175,6 +175,21 @@ Vue.createApp(
 
 	methods:
 	{
+		toggle_navbar_collapse(ref)
+		{
+	        let show = this.navbar_class_array.indexOf('show') > -1 ? false : 'show'
+	        this.navbar_class_array = ['collapsing']
+	        setTimeout(() =>
+			{
+	            if (show)
+				{
+	                let height = this.$refs[ref].firstChild.clientHeight + 'px';
+	                this.navbar_style_object = { height }
+	            }
+	            else this.navbar_style_object = {}
+	        }, 10)
+	        setTimeout(() => { this.navbar_class_array = ['collapse', show] }, 340)
+    	},
 		onHashChange()
 		{
 			var active_tab = window.location.hash.replace(/#\/?/, '');
