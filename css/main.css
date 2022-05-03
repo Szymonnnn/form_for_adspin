@@ -33,13 +33,17 @@ h1
 	margin: 20px;
 }
 
-.navbar
+.navbar-container
 {
-	min-height: 57px;
 	position: sticky;
 	position: -webkit-sticky;
 	top: 0;
 	z-index: 1;
+}
+
+.navbar
+{
+	min-height: 57px;
 }
 
 .btn-primary.disabled, .btn-primary:disabled
