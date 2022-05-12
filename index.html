@@ -68,29 +68,38 @@
 			<section id="inputs" :class="{ 'tab-active': active_tab === 'form' }">
 
 				<div class="container">
-					<div class="row">
+					<form class="row needs-validation" novalidate>
 
-						<div class="form-group col-md-6">
+						<div class="col-md-6">
 							<label for="name_of_company" class="name">What you want to advertise?</label>
-							<input v-model="form_data.name_of_company" id="name_of_company" type="text" class="form-control" placeholder="adspin" name="name_of_company">
+							<input pattern=".{2,}" v-model="form_data.name_of_company" id="name_of_company" type="text" class="form-control" placeholder="adspin" name="name_of_company" required />
+							<div class="invalid-feedback">
+								Please enter your company name - at least 2 characters
+							</div>
 						</div>
 
-						<div class="form-group col-md-6">
+						<div class="col-md-6">
 							<label for="key_features" class="name">Name three key features of your product</label>
-							<input  v-model="form_data.key_features" id="key_features" type="text" class="form-control" placeholder="fast, fresh, effective" name="key_features">
+							<input  pattern="^(\w+(\s+\w+)*)(,(\s+\w+)+){2}$" v-model="form_data.key_features" id="key_features" type="text" class="form-control" placeholder="fast, fresh, effective" name="key_features" required />
+							<div class="invalid-feedback">
+								Please enter three key features, separating with ", " (comma and space)
+							</div>
 						</div>
 
-						<div class="form-group col-md-12">
+						<div class="col-md-12">
 							<label for="description">Describe your company in a few words</label>
-							<textarea  v-model="form_data.description" id="description" type="text" class="form-control" rows="8" name="description" placeholder="We are a web service that will make your ads spin faster than ever. Our team believes proper advertising is the key to succes. Give it a go and create a custom ad - it's free"></textarea>
+							<textarea  pattern=".{15,160}" v-model="form_data.description" id="description" type="text" class="form-control" rows="8" name="description" placeholder="We are a web service that will make your ads spin faster than ever. Our team believes proper advertising is the key to succes. Give it a go and create a custom ad - it's free" required /></textarea>
+							<div class="invalid-feedback">
+								Please describe your company
+							</div>
 						</div>
 
 
-						<div class="form-group col-12 col-md-2">
-							<button id="generate-btn" type="button" class="btn btn-primary" @click="generate_button_click">Generate</button>
+						<div class="col-12 col-md-2">
+							<button id="generate-btn" type="submit" class="btn btn-primary" @click="generate_button_click">Generate</button>
 						</div>
 
-					</div>
+					</form>
 				</div>
 			</section>
 
@@ -110,5 +119,6 @@
 </body>
 
 <script src="js/service.js"></script>
+<script src="js/form_validation.js"></script>
 
 </html>
