@@ -68,7 +68,7 @@
 			<section id="inputs" :class="{ 'tab-active': active_tab === 'form' }">
 
 				<div class="container">
-					<form class="row needs-validation" novalidate>
+					<form class="row needs-validation" novalidate id="ad_input_form" method="post">
 
 						<div class="col-md-6">
 							<label for="name_of_company" class="name">What you want to advertise?</label>
@@ -80,7 +80,7 @@
 
 						<div class="col-md-6">
 							<label for="key_features" class="name">Name three key features of your product</label>
-							<input  pattern="^(\w+(\s+\w+)*)(,(\s+\w+)+){2}$" v-model="form_data.key_features" id="key_features" type="text" class="form-control" placeholder="fast, fresh, effective" name="key_features" required />
+							<input  pattern="^(\w+(\s+\w+)*)([,.;](\s+\w+)+){2}$" v-model="form_data.key_features" id="key_features" type="text" class="form-control" placeholder="fast, fresh, effective" name="key_features" required />
 							<div class="invalid-feedback">
 								Please enter three key features, separating with ", " (comma and space)
 							</div>
@@ -119,6 +119,6 @@
 </body>
 
 <script src="js/service.js"></script>
-<script src="js/form_validation.js"></script>
+<!-- <script src="js/form_validation.js"></script> -->
 
 </html>

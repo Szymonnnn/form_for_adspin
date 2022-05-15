@@ -8,8 +8,6 @@ var generate_token = function()
 	return rand() + rand()
 };
 
-const SESSION_TOKEN = generate_token();
-
 const TABS =
 {
 	 form: () => console.log("form"),
@@ -42,7 +40,7 @@ Vue.createApp(
 		active_tab: 'form',
 		form_data:
 		{
-			"user_id": SESSION_TOKEN,
+			session_token: '',
 			name_of_company: '',
 			key_features: '',
 			description: '',
@@ -52,13 +50,23 @@ Vue.createApp(
 		previous_tap_target: 0,
 
 		navbar_class_array: ['collapse'],
-      	navbar_style_object: {}
+      	navbar_style_object: {},
+		ad_input_form: ''
 	}
 	},
 	mounted()
 	{
 		window.addEventListener('hashchange', this.onHashChange)
 		this.onHashChange()
+		// get a session token from the backend
+		this.form_data.session_token = generate_token();
+
+		this.ad_input_form = document.getElementById('ad_input_form');
+		this.ad_input_form.addEventListener( 'submit', function ( event )
+	    {
+	        event.preventDefault( )
+	        event.stopPropagation( );
+	  	}, false );
 	},
 
 	methods:
@@ -97,15 +105,19 @@ Vue.createApp(
 		},
 		generate_button_click()
 		{
-			this.post_form();
-			window.location.hash = '/listing'; // redirect
-			// this.ads = []; // clear the listing
-			this.update_listing(); // load ads
+			this.ad_input_form.classList.add( 'was-validated' );
+			if ( this.ad_input_form.checkValidity( ) )
+			{
+				this.post_form();
+				window.location.hash = '/listing'; // redirect
+				// this.ads = []; // clear the listing
+				this.update_listing(); // load ads
+			}
 		},
-		update_listing(ads)
+		update_listing()
 		{
 			// TODO: replace dummy_ads_row() with a real (ascync) request
-			console.log("making an ad load request from the user " + SESSION_TOKEN);
+			console.log("making an ad load request from the user " + this.form_data.session_token);
 			this.ads.push(dummy_ads_row(), dummy_ads_row());
 			console.log(this.ads);
 		},
@@ -117,7 +129,7 @@ Vue.createApp(
 		},
 		send_feedback(ad)
 		{
-			console.log("the user " + SESSION_TOKEN + " " + (ad.liked ? "liked" : "disliked") + " the ad with id = " + ad.id);
+			console.log("the user " + this.form_data.session_token + " " + (ad.liked ? "liked" : "disliked") + " the ad with id = " + ad.id);
 		    // alert("the user " + (state ? "liked" : "disliked") + " the ad with id = " + id);
 		    // TODO: a request to django containing ad id and state (bool indicating whether i was liked)
 		},
