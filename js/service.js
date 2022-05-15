@@ -60,13 +60,6 @@ Vue.createApp(
 		this.onHashChange()
 		// get a session token from the backend
 		this.form_data.session_token = generate_token();
-
-		this.ad_input_form = document.getElementById('ad_input_form');
-		this.ad_input_form.addEventListener( 'submit', function ( event )
-	    {
-	        event.preventDefault( )
-	        event.stopPropagation( );
-	  	}, false );
 	},
 
 	methods:
@@ -103,10 +96,10 @@ Vue.createApp(
 			console.log("posting the form from the user");
 			console.log(this.form_data);
 		},
-		generate_button_click()
+		generate_button_click(form)
 		{
-			this.ad_input_form.classList.add( 'was-validated' );
-			if ( this.ad_input_form.checkValidity( ) )
+			form.classList.add( 'was-validated' );
+			if ( form.checkValidity( ) )
 			{
 				this.post_form();
 				window.location.hash = '/listing'; // redirect

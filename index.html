@@ -68,7 +68,7 @@
 			<section id="inputs" :class="{ 'tab-active': active_tab === 'form' }">
 
 				<div class="container">
-					<form class="row needs-validation" novalidate id="ad_input_form" method="post">
+					<form class="row needs-validation" novalidate method="post" @submit.prevent="generate_button_click($event.target)">
 
 						<div class="col-md-6">
 							<label for="name_of_company" class="name">What you want to advertise?</label>
@@ -96,7 +96,7 @@
 
 
 						<div class="col-12 col-md-2">
-							<button id="generate-btn" type="submit" class="btn btn-primary" @click="generate_button_click">Generate</button>
+							<button id="generate-btn" type="submit" class="btn btn-primary">Generate</button>
 						</div>
 
 					</form>
