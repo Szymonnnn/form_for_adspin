@@ -1,3 +1,9 @@
+API_URL = "http://localhost:8080/adspin_backend_mock/";
+TOKEN_ENDPOINT = "session_token.php";
+FORM_ENDPOINT = "form_consumption.php";
+AD_LOAD_ENDPINT = "dummy_ads.php";
+FEEDBACK_ENDPOINT = "form_consumption.php";
+
 var rand = function()
 {
 	return Math.random().toString(36).substr(2); // remove `0.`
@@ -59,11 +65,23 @@ Vue.createApp(
 		window.addEventListener('hashchange', this.onHashChange)
 		this.onHashChange()
 		// get a session token from the backend
-		this.form_data.session_token = generate_token();
+		this.get_session_token();
 	},
 
 	methods:
 	{
+		get_session_token()
+		{
+			axios
+			   .get(API_URL + TOKEN_ENDPOINT)
+			   .then(response =>
+			   {
+				   this.form_data.session_token = response.data.session_token;
+			   })
+			   .catch(error => console.log(error))
+
+			// this.form_data.session_token =  generate_token();
+		},
 		toggle_navbar_collapse(ref)
 		{
 	        let show = this.navbar_class_array.indexOf('show') > -1 ? false : 'show'
@@ -90,41 +108,53 @@ Vue.createApp(
 				this.active_tab = 'form';
 			}
 		},
-		post_form()
+		async post_form()
 		{
-			// post form
 			console.log("posting the form from the user");
-			console.log(this.form_data);
+			const response = await axios.post(API_URL + FORM_ENDPOINT, this.form_data);
+			console.log("API response:")
+			console.log(response.data);
+			return new Promise(resolve => resolve('r'));
 		},
-		generate_button_click(form)
+		async ad_form_submit(form)
 		{
 			form.classList.add( 'was-validated' );
 			if ( form.checkValidity( ) )
 			{
-				this.post_form();
-				window.location.hash = '/listing'; // redirect
+				await this.post_form();
 				// this.ads = []; // clear the listing
 				this.update_listing(); // load ads
+				window.location.hash = '/listing'; // redirect
 			}
 		},
 		update_listing()
 		{
-			// TODO: replace dummy_ads_row() with a real (ascync) request
-			console.log("making an ad load request from the user " + this.form_data.session_token);
-			this.ads.push(dummy_ads_row(), dummy_ads_row());
-			console.log(this.ads);
+			data = { session_token: this.form_data.session_token };
+			axios
+			   .post(API_URL + AD_LOAD_ENDPINT, data)
+			   .then(response =>
+			   {
+				   	console.log(response.data);
+				    this.ads.push(response.data);
+			   })
+			   .catch(error => console.log(error))
 		},
 		lazy_load_ads() // function called by the observer
 		{
 			// enable lazy loading only after first form post
-			if(this.ads !== [])
-				this.update_listing(); // load ads
+			if(this.ads !== []) this.update_listing(); // load ads
 		},
 		send_feedback(ad)
 		{
-			console.log("the user " + this.form_data.session_token + " " + (ad.liked ? "liked" : "disliked") + " the ad with id = " + ad.id);
-		    // alert("the user " + (state ? "liked" : "disliked") + " the ad with id = " + id);
-		    // TODO: a request to django containing ad id and state (bool indicating whether i was liked)
+			data =
+			{
+				"session_token" : this.form_data.session_token,
+				"ad_id" : ad.id,
+				"liked" : ad.liked
+			}
+			axios
+			   .post(API_URL + FEEDBACK_ENDPOINT, data)
+			   .catch(error => console.log(error))
 		},
 		ad_liked_toggle(ad)
 		{
