@@ -33,13 +33,17 @@ h1
 	margin: 20px;
 }
 
-.navbar
+.navbar-container
 {
-	min-height: 57px;
 	position: sticky;
 	position: -webkit-sticky;
 	top: 0;
 	z-index: 1;
+}
+
+.navbar
+{
+	min-height: 57px;
 }
 
 .btn-primary.disabled, .btn-primary:disabled
@@ -55,25 +59,35 @@ h1
 }
 
 
+#inputs, #ads_grid
+{
+	display: none;
+}
+
+:is(#inputs, #ads_grid).tab-active
+{
+	display: block;
+}
+
 /******* FORM *******/
 
-.inputs
+#inputs
 {
 	text-align: left;
 }
 
-.inputs img
+#inputs img
 {
 	width: 100%;
 	height: auto;
 }
 
-.inputs p
+#inputs p
 {
 	margin-bottom: 30px;
 }
 
-.inputs figcaption
+#inputs figcaption
 {
 	margin-top: 8px;
 }
@@ -83,23 +97,32 @@ h1
 	text-align: left;
 }
 
+#generate-btn
+{
+	width: 100%;
+}
 
 /******* LISTING *******/
 
-.ads-grid .row > [class*="col-"] > img
+#ads_grid .row > [class*="col-"] > img
 {
 	/* display: inline-block; */
 	max-width: 100%;
 	/* max-height: 100%; */
 }
 
-.glyphicon-heart-contour::after
+#ad_loading_spinner.invisible
+{
+	display: none;
+}
+
+.like-button[liked=false]::after
 {
 	/* content: "♡"; */
 	content: url("../icons/heart-contour.svg");
 }
 
-.glyphicon-heart-fill::after
+.like-button[liked=true]::after
 {
 	/* content: "♥︎"; */
 	content: url("../icons/heart-fill.svg");
@@ -132,16 +155,16 @@ h1
 
 @media (hover: none)
 {
-	.ads-grid .row > [class*="col-"] > .glyphicon-heart-contour
+	#ads_grid .row > [class*="col-"] > .like-button[liked=false]
 	{
 		opacity: 1;
 		pointer-events: none;
 	}
-	.ads-grid .row > [class*="col-"] > .like-button
+	#ads_grid .row > [class*="col-"] > .like-button
 	{
 		pointer-events: none;
 	}
-	.ads-grid .row > [class*="col-"]
+	#ads_grid .row > [class*="col-"]
 	{
 		touch-action: pinch-zoom pan-x pan-y;
 	}
@@ -149,17 +172,17 @@ h1
 
 @media (hover: hover)
 {
-	.ads-grid .row > [class*="col-"]:hover
+	#ads_grid .row > [class*="col-"]:hover
 	{
 		opacity: 0.8;
 	}
 
-	.ads-grid .row > [class*="col-"] > .glyphicon-heart-contour
+	#ads_grid .row > [class*="col-"] > .like-button[liked=false]
 	{
 		opacity: 0;
 	}
 
-	.ads-grid .row > [class*="col-"]:hover > .glyphicon-heart-contour
+	#ads_grid .row > [class*="col-"]:hover > .like-button[liked=false]
 	{
 		opacity: 1;
 	}
