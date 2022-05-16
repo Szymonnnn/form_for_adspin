@@ -57,7 +57,9 @@ Vue.createApp(
 
 		navbar_class_array: ['collapse'],
       	navbar_style_object: {},
-		ad_input_form: ''
+		ad_input_form: '',
+		was_form_posted: false,
+		ad_loading_spinner: ''
 	}
 	},
 	mounted()
@@ -66,10 +68,32 @@ Vue.createApp(
 		this.onHashChange()
 		// get a session token from the backend
 		this.get_session_token();
+		this.add_observers();
+		this.ad_loading_spinner = document.getElementById('ad_loading_spinner');
 	},
 
 	methods:
 	{
+		add_observers()
+		{
+		    let options =
+		    {
+		        // root: document.querySelector('#scrollArea'),
+		        // rootMargin: '0px',
+		        threshold: 1 / 15
+		    }
+
+		    let observer = new IntersectionObserver(this.callback, options);
+			observer.observe(document.getElementById('observed_target'));
+		},
+		callback (entries, observer)
+		{
+		    entries.forEach(entry =>
+		    {
+		        if (entry.isIntersecting) this.lazy_load_ads();
+		    });
+		},
+
 		get_session_token()
 		{
 			axios
@@ -114,6 +138,7 @@ Vue.createApp(
 			const response = await axios.post(API_URL + FORM_ENDPOINT, this.form_data);
 			console.log("API response:")
 			console.log(response.data);
+			this.was_form_posted = true;
 			return new Promise(resolve => resolve('r'));
 		},
 		async ad_form_submit(form)
@@ -129,11 +154,13 @@ Vue.createApp(
 		},
 		update_listing()
 		{
+			this.ad_loading_spinner.classList.toggle("invisible");
 			data = { session_token: this.form_data.session_token };
 			axios
 			   .post(API_URL + AD_LOAD_ENDPINT, data)
 			   .then(response =>
 			   {
+	   				this.ad_loading_spinner.classList.toggle("invisible");
 				   	console.log(response.data);
 				    this.ads.push(response.data);
 			   })
@@ -142,7 +169,7 @@ Vue.createApp(
 		lazy_load_ads() // function called by the observer
 		{
 			// enable lazy loading only after first form post
-			if(this.ads !== []) this.update_listing(); // load ads
+			if(this.was_form_posted) this.update_listing(); // load ads
 		},
 		send_feedback(ad)
 		{
