@@ -1,8 +1,8 @@
-API_URL = "http://localhost:8080/adspin_backend_mock/";
-TOKEN_ENDPOINT = "session_token.php";
-FORM_ENDPOINT = "form_consumption.php";
-AD_LOAD_ENDPINT = "dummy_ads.php";
-FEEDBACK_ENDPOINT = "form_consumption.php";
+API_URL = "https://adspin.herokuapp.com/playground/";
+TOKEN_ENDPOINT = "sessionToken";
+FORM_ENDPOINT = "submit";
+AD_LOAD_ENDPINT = "getNewImages";
+FEEDBACK_ENDPOINT = "liked";
 
 var rand = function()
 {
@@ -136,7 +136,7 @@ Vue.createApp(
 		{
 			console.log("posting the form from the user");
 			const response = await axios.post(API_URL + FORM_ENDPOINT, this.form_data);
-			console.log("API response:")
+			console.log("API form response:")
 			console.log(response.data);
 			this.was_form_posted = true;
 			return new Promise(resolve => resolve('r'));
@@ -155,9 +155,9 @@ Vue.createApp(
 		update_listing()
 		{
 			this.ad_loading_spinner.classList.toggle("invisible");
-			data = { session_token: this.form_data.session_token };
+			data = { session_token: this.form_data.session_token, size: 12 };
 			axios
-			   .post(API_URL + AD_LOAD_ENDPINT, data)
+			   .get(API_URL + AD_LOAD_ENDPINT, data)
 			   .then(response =>
 			   {
 	   				this.ad_loading_spinner.classList.toggle("invisible");
@@ -176,11 +176,16 @@ Vue.createApp(
 			data =
 			{
 				"session_token" : this.form_data.session_token,
-				"ad_id" : ad.id,
+				"id" : ad.id,
 				"liked" : ad.liked
 			}
 			axios
 			   .post(API_URL + FEEDBACK_ENDPOINT, data)
+			   .then(response =>
+			   {
+				   	console.log("API like response:");
+				   	console.log(response.data);
+			   })
 			   .catch(error => console.log(error))
 		},
 		ad_liked_toggle(ad)
