@@ -1,7 +1,7 @@
 // API_URL = "https://adspin.herokuapp.com/playground/";
 // TOKEN_ENDPOINT = "sessionToken";
 API_URL = "http://localhost:8080/adspin_backend_mock/";
-TOKEN_ENDPOINT = "session_token";
+TOKEN_ENDPOINT = "session_token.php";
 FORM_ENDPOINT = "submit";
 AD_LOAD_ENDPINT = "getNewImages";
 FEEDBACK_ENDPOINT = "liked";
