@@ -59,7 +59,8 @@ Vue.createApp(
       	navbar_style_object: {},
 		ad_input_form: '',
 		was_form_posted: false,
-		ad_loading_spinner: ''
+		ad_loading_spinner: '',
+		csrf_token: ''
 	}
 	},
 	mounted()
@@ -101,6 +102,7 @@ Vue.createApp(
 			   .then(response =>
 			   {
 				   this.form_data.session_token = response.data.session_token;
+				   axios.defaults.headers.post['X-CSRF-Token'] = response.data.csrf_token;
 			   })
 			   .catch(error => console.log(error))
 
