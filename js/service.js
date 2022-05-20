@@ -59,8 +59,7 @@ Vue.createApp(
       	navbar_style_object: {},
 		ad_input_form: '',
 		was_form_posted: false,
-		ad_loading_spinner: '',
-		csrf_token: ''
+		ad_loading_spinner: ''
 	}
 	},
 	mounted()
@@ -104,7 +103,6 @@ Vue.createApp(
 			   {
 				   this.form_data.session_token = response.data.session_token;
 				   axios.defaults.headers.post['X-CSRFToken'] = response.data.csrf_token;
-				   csrf_token = esponse.data.csrf_token;
 			   })
 			   .catch(error => console.log(error))
 
@@ -161,7 +159,7 @@ Vue.createApp(
 			this.ad_loading_spinner.classList.toggle("invisible");
 			data = { session_token: this.form_data.session_token, size: 12 };
 			axios
-			   .get(API_URL + AD_LOAD_ENDPINT, data)
+			   .post(API_URL + AD_LOAD_ENDPINT, data)
 			   .then(response =>
 			   {
 	   				this.ad_loading_spinner.classList.toggle("invisible");
