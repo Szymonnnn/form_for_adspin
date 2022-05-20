@@ -138,13 +138,8 @@ Vue.createApp(
 		},
 		async post_form()
 		{
-			config = 
-			{
-            			headers: { Cookie: "csrftoken=" + this.csrf_token + ";"}
-            		};
-				
 			console.log("posting the form from the user");
-			const response = await axios.post(API_URL + FORM_ENDPOINT, this.form_data, config);
+			const response = await axios.post(API_URL + FORM_ENDPOINT, this.form_data);
 			console.log("API form response:")
 			console.log(response.data);
 			this.was_form_posted = true;
