@@ -102,7 +102,7 @@ Vue.createApp(
 			   .then(response =>
 			   {
 				   this.form_data.session_token = response.data.session_token;
-				   axios.defaults.headers.post['X-CSRF-Token'] = response.data.csrf_token;
+				   axios.defaults.headers.post['X-CSRFToken'] = response.data.csrf_token;
 			   })
 			   .catch(error => console.log(error))
 
