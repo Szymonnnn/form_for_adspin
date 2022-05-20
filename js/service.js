@@ -140,7 +140,7 @@ Vue.createApp(
 		{
 			config = 
 			{
-            			headers: { Cookie: "csrftoken=" + this. + ";"}
+            			headers: { Cookie: "csrftoken=" + this.csrf_token + ";"}
             		};
 				
 			console.log("posting the form from the user");
