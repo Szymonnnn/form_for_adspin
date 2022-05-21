@@ -65,14 +65,15 @@ Vue.createApp(
 	mounted()
 	{
 		window.addEventListener('hashchange', this.onHashChange)
-		this.onHashChange()
-		// get a session token from the backend
-		this.get_session_token();
-		this.add_observers();
-		this.ad_loading_spinner = document.getElementById('ad_loading_spinner');
+		
 		axios.defaults.withCredentials = true;
 		axios.defaults.xsrfCookieName = 'csrftoken';
 		axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+		this.get_session_token();
+		this.add_observers();
+		this.ad_loading_spinner = document.getElementById('ad_loading_spinner');
+		this.onHashChange();
 	},
 
 	methods:
