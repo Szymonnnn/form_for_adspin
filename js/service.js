@@ -71,6 +71,8 @@ Vue.createApp(
 		this.add_observers();
 		this.ad_loading_spinner = document.getElementById('ad_loading_spinner');
 		axios.defaults.withCredentials = true;
+		axios.defaults.xsrfCookieName = 'csrftoken';
+		axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 	},
 
 	methods:
