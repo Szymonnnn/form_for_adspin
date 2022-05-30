@@ -65,7 +65,7 @@ Vue.createApp(
 	mounted()
 	{
 		window.addEventListener('hashchange', this.onHashChange)
-		
+
 		axios.defaults.withCredentials = true;
 		axios.defaults.xsrfCookieName = 'csrftoken';
 		axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -153,19 +153,19 @@ Vue.createApp(
 			{
 				await this.post_form();
 				// this.ads = []; // clear the listing
-				this.update_listing(); // load ads
 				window.location.hash = '/listing'; // redirect
+				this.update_listing(); // load ads
 			}
 		},
 		update_listing()
 		{
-			this.ad_loading_spinner.classList.toggle("invisible");
+			this.ad_loading_spinner.classList.remove("invisible");
 			data = { session_token: this.form_data.session_token, size: 12 };
 			axios
 			   .post(API_URL + AD_LOAD_ENDPINT, data)
 			   .then(response =>
 			   {
-	   				this.ad_loading_spinner.classList.toggle("invisible");
+	   				this.ad_loading_spinner.classList.add("invisible");
 				   	console.log(response.data);
 				    this.ads.push(response.data);
 			   })
