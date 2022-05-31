@@ -59,7 +59,8 @@ Vue.createApp(
       	navbar_style_object: {},
 		ad_input_form: '',
 		was_form_posted: false,
-		ad_loading_spinner: ''
+		ad_loading_spinner: '',
+		ll_observer: ''
 	}
 	},
 	mounted()
@@ -71,30 +72,35 @@ Vue.createApp(
 		axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 		this.get_session_token();
-		this.add_observers();
 		this.ad_loading_spinner = document.getElementById('ad_loading_spinner');
 		this.onHashChange();
+
+	    let options =
+	    {
+	        // root: document.querySelector('#scrollArea'),
+	        // rootMargin: '0px',
+	        // threshold: 1 / 10
+	    };
+		this.ll_observer = new IntersectionObserver(this.ll_callback, options);
 	},
 
 	methods:
 	{
-		add_observers()
+		add_observer_targets()
 		{
-		    let options =
-		    {
-		        // root: document.querySelector('#scrollArea'),
-		        // rootMargin: '0px',
-		        threshold: 1 / 15
-		    }
-
-		    let observer = new IntersectionObserver(this.callback, options);
-			observer.observe(document.getElementById('observed_target'));
+			observer_targets = document.querySelectorAll('.observed_target');
+			observer_targets.forEach(target => this.ll_observer.observe(target));
 		},
-		callback (entries, observer)
+		ll_callback (entries, observer)
 		{
 		    entries.forEach(entry =>
 		    {
-		        if (entry.isIntersecting) this.lazy_load_ads();
+		        if (entry.isIntersecting)
+				{
+					observer.unobserve(entry.target);
+					entry.target.classList.remove('observed_target');
+					this.lazy_load_ads();
+				}
 		    });
 		},
 
@@ -155,6 +161,7 @@ Vue.createApp(
 				// this.ads = []; // clear the listing
 				window.location.hash = '/listing'; // redirect
 				this.update_listing(); // load ads
+				this.update_listing(); // load moar ads
 			}
 		},
 		update_listing()
@@ -168,6 +175,7 @@ Vue.createApp(
 	   				this.ad_loading_spinner.classList.add("invisible");
 				   	console.log(response.data);
 				    this.ads.push(response.data);
+					this.add_observer_targets();
 			   })
 			   .catch(error => console.log(error))
 		},
