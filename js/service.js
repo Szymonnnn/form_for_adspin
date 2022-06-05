@@ -54,11 +54,11 @@ Vue.createApp(
 		ads: [],
 		latest_tap_time: 0,
 		previous_tap_target: 0,
-
 		navbar_class_array: ['collapse'],
       	navbar_style_object: {},
 		ad_input_form: '',
 		was_form_posted: false,
+		session_restored: false,
 		ad_loading_spinner: '',
 		ll_observer: ''
 	}
@@ -112,6 +112,7 @@ Vue.createApp(
 			   {
 				   this.form_data.session_token = response.data.session_token;
 				   axios.defaults.headers.post['X-CSRFToken'] = response.data.csrf_token;
+				   this.session_restored = response.data.session_restored;
 			   })
 			   .catch(error => console.log(error))
 
@@ -136,7 +137,10 @@ Vue.createApp(
 		{
 			var active_tab = window.location.hash.replace(/#\/?/, '');
 			if (TABS[active_tab])
-			{ this.active_tab = active_tab }
+			{
+			    this.active_tab = active_tab;
+			    if(active_tab === "listing") this.lazy_load_ads();
+			}
 			else
 			{
 				window.location.hash = '';
@@ -161,7 +165,6 @@ Vue.createApp(
 				// this.ads = []; // clear the listing
 				window.location.hash = '/listing'; // redirect
 				this.update_listing(); // load ads
-				this.update_listing(); // load moar ads
 			}
 		},
 		update_listing()
@@ -181,8 +184,10 @@ Vue.createApp(
 		},
 		lazy_load_ads() // function called by the observer
 		{
-			// enable lazy loading only after first form post
-			if(this.was_form_posted) this.update_listing(); // load ads
+			console.log(this.session_restored);
+			// enable lazy loading only after first form post or if another session was found
+			if(this.was_form_posted || this.session_restored)
+				this.update_listing(); // load ads
 		},
 		send_feedback(ad)
 		{
