@@ -109,8 +109,10 @@
 					<div class="row gy-3" v-for="ads_row in ads">
 						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2" v-for="(ad, index) in ads_row" :class="{ 'observed_target': index === 'ad9' }">
 							<img :src="ad.img_url" alt="sample ad" @touchend="ad_touch_service(ad, $event)">
-							<button type="button" class="like-button" :liked="ad.liked" @click="ad_liked_toggle(ad)">
+							<button type="button" class="on-image-button" :liked="ad.liked" @click="ad_liked_toggle(ad)">
 							</button>
+							<a type="button" class="on-image-button download-btn" :href="ad.img_url" download>
+							</a>
 						</div>
 					</div>
 				</div>

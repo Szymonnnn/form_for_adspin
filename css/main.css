@@ -117,19 +117,7 @@ h1
 	display: none;
 }
 
-.like-button[liked=false]::after
-{
-	/* content: "♡"; */
-	content: url("../icons/heart-contour.svg");
-}
-
-.like-button[liked=true]::after
-{
-	/* content: "♥︎"; */
-	content: url("../icons/heart-fill.svg");
-}
-
-.like-button
+.on-image-button
 {
 	display: block;
 	position: absolute;
@@ -142,27 +130,59 @@ h1
 	border: none;
 }
 
-.like-button::after
+.on-image-button::after
 {
 	display: block;
 	width: 3rem;
 }
 
-.like-button:focus
+.on-image-button:focus
 {
 	outline: none;
+}
+
+.on-image-button[liked=false]::after
+{
+	/* content: "♡"; */
+	content: url("../icons/heart-contour.svg");
+}
+
+.on-image-button[liked=true]::after
+{
+	/* content: "♥︎"; */
+	content: url("../icons/heart-fill.svg");
+}
+
+.on-image-button.download-btn
+{
+	right: 0;
+}
+
+.on-image-button.download-btn::after
+{
+	content: url("../icons/download.svg");
+}
+
+.on-image-button.download-btn:focus::after, .on-image-button.download-btn:active::after, .on-image-button.download-btn:visited::after
+{
+	content: url("../icons/downloaded.svg");
 }
 
 
 @media (hover: none)
 {
-	#ads_grid .row > [class*="col-"] > .like-button[liked=false]
+	#ads_grid .row > [class*="col-"] > .on-image-button[liked=false]
 	{
 		opacity: 1;
 		pointer-events: none;
 	}
-	#ads_grid .row > [class*="col-"] > .like-button
+	#ads_grid .row > [class*="col-"] > .on-image-button
 	{
+		pointer-events: none;
+	}
+	#ads_grid .row > [class*="col-"] > .on-image-button.download-btn
+	{
+		opacity: 0;
 		pointer-events: none;
 	}
 	#ads_grid .row > [class*="col-"]
@@ -178,12 +198,12 @@ h1
 		opacity: 0.8;
 	}
 
-	#ads_grid .row > [class*="col-"] > .like-button[liked=false]
+	#ads_grid .row > [class*="col-"] > .on-image-button[liked=false], #ads_grid .row > [class*="col-"] > .on-image-button.download-btn
 	{
 		opacity: 0;
 	}
 
-	#ads_grid .row > [class*="col-"]:hover > .like-button[liked=false]
+	#ads_grid .row > [class*="col-"]:hover > .on-image-button[liked=false], #ads_grid .row > [class*="col-"]:hover > .on-image-button.download-btn
 	{
 		opacity: 1;
 	}

@@ -166,6 +166,9 @@ Vue.createApp(
 		},
 		update_listing()
 		{
+			this.ads.push(dummy_ads_row());
+			return;
+
 			this.ad_loading_spinner.classList.remove("invisible");
 			data = { session_token: this.form_data.session_token, size: 12 };
 			axios
