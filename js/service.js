@@ -2,6 +2,7 @@ API_URL = "https://adspin.herokuapp.com/playground/";
 TOKEN_ENDPOINT = "sessionToken/";
 FORM_ENDPOINT = "submit/";
 AD_LOAD_ENDPINT = "getNewImages/";
+LIKED_AD_ENDPINT = "getLikedImages/";
 FEEDBACK_ENDPOINT = "liked/";
 
 var rand = function()
@@ -17,7 +18,8 @@ var generate_token = function()
 const TABS =
 {
 	 form: () => console.log("form"),
-	 listing: () => console.log("listing")
+	 listing: () => console.log("listing"),
+	 liked: () => console.log("liked")
 }
 
 function dummy_ads_row()
@@ -60,12 +62,14 @@ Vue.createApp(
 		was_form_posted: false,
 		session_restored: false,
 		ad_loading_spinner: '',
-		ll_observer: ''
+		ll_observer: '',
+		liked_ads: [],
+		user_signed_in: false
 	}
 	},
 	mounted()
 	{
-		window.addEventListener('hashchange', this.onHashChange)
+		window.addEventListener('hashchange', this.on_hash_change)
 
 		axios.defaults.withCredentials = true;
 		axios.defaults.xsrfCookieName = 'csrftoken';
@@ -73,7 +77,7 @@ Vue.createApp(
 
 		this.get_session_token();
 		this.ad_loading_spinner = document.getElementById('ad_loading_spinner');
-		this.onHashChange();
+		this.on_hash_change();
 
 	    let options =
 	    {
@@ -83,7 +87,13 @@ Vue.createApp(
 	    };
 		this.ll_observer = new IntersectionObserver(this.ll_callback, options);
 	},
-
+	computed:
+	{
+		computed_liked_ads()
+		{
+			return this.ads.reduce((acc, ads_row) => acc.concat(ads_row.filter((ad) => ad.liked)), []);
+		}
+	},
 	methods:
 	{
 		add_observer_targets()
@@ -133,13 +143,14 @@ Vue.createApp(
 	        }, 10)
 	        setTimeout(() => { this.navbar_class_array = ['collapse', show] }, 340)
     	},
-		onHashChange()
+		on_hash_change()
 		{
 			var active_tab = window.location.hash.replace(/#\/?/, '');
 			if (TABS[active_tab])
 			{
 			    this.active_tab = active_tab;
 			    if(active_tab === "listing") this.lazy_load_ads();
+				else if(active_tab == "liked") this.get_liked_items();
 			}
 			else
 			{
@@ -169,6 +180,9 @@ Vue.createApp(
 		},
 		update_listing()
 		{
+			// this.ads.push(dummy_ads_row());
+			// return;
+
 			this.ad_loading_spinner.classList.remove("invisible");
 			data = { session_token: this.form_data.session_token, size: 12 };
 			axios
@@ -211,6 +225,26 @@ Vue.createApp(
 			ad.liked = !ad.liked;
 			this.send_feedback(ad);
 		},
+		get_liked_items()
+		{
+			if (!this.user_signed_in)
+			{
+				this.liked_ads = this.computed_liked_ads;
+				return;
+			}
+
+			this.ad_loading_spinner.classList.remove("invisible");
+			data = { session_token: this.form_data.session_token };
+			axios
+			   .post(API_URL + LIKED_AD_ENDPINT, data)
+			   .then(response =>
+			   {
+	   				this.ad_loading_spinner.classList.add("invisible");
+				   	console.log(response.data);
+				    this.liked_ads = response.data;
+			   })
+			   .catch(error => console.log(error))
+		},
 		ad_touch_service(ad, event)
 		{
 			var now = new Date().getTime();
@@ -232,7 +266,7 @@ Vue.createApp(
 		        this.latest_tap_time = new Date().getTime();
 		    }
 		    this.previous_tap_target = ad.id;
-		},
+		}
 	}
 
 }).mount('#app')

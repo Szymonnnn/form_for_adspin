@@ -59,12 +59,12 @@ h1
 }
 
 
-#inputs, #ads_grid
+#inputs, .ads_grid
 {
 	display: none;
 }
 
-:is(#inputs, #ads_grid).tab-active
+:is(#inputs, .ads_grid).tab-active
 {
 	display: block;
 }
@@ -104,7 +104,7 @@ h1
 
 /******* LISTING *******/
 
-#ads_grid .row > [class*="col-"] > img
+.ads_grid .row > [class*="col-"] > img
 {
 	/* display: inline-block; */
 	/* max-width: 100%; */
@@ -163,7 +163,7 @@ h1
 	content: url("../icons/download.svg");
 }
 
-.on-image-button.download-btn:focus::after, .on-image-button.download-btn:active::after, .on-image-button.download-btn:visited::after
+.on-image-button.download-btn:focus::after, .on-image-button.download-btn:visited::after
 {
 	content: url("../icons/downloaded.svg");
 }
@@ -171,21 +171,21 @@ h1
 
 @media (hover: none)
 {
-	#ads_grid .row > [class*="col-"] > .on-image-button[liked=false]
+	.ads_grid .row > [class*="col-"] > .on-image-button[liked=false]
 	{
 		opacity: 1;
 		pointer-events: none;
 	}
-	#ads_grid .row > [class*="col-"] > .on-image-button
+	.ads_grid .row > [class*="col-"] > .on-image-button
 	{
 		pointer-events: none;
 	}
-	#ads_grid .row > [class*="col-"] > .on-image-button.download-btn
+	.ads_grid .row > [class*="col-"] > .on-image-button.download-btn
 	{
 		opacity: 0;
 		pointer-events: none;
 	}
-	#ads_grid .row > [class*="col-"]
+	.ads_grid .row > [class*="col-"]
 	{
 		touch-action: pinch-zoom pan-x pan-y;
 	}
@@ -193,17 +193,17 @@ h1
 
 @media (hover: hover)
 {
-	#ads_grid .row > [class*="col-"]:hover
+	.ads_grid .row > [class*="col-"]:hover
 	{
 		opacity: 0.8;
 	}
 
-	#ads_grid .row > [class*="col-"] > .on-image-button[liked=false], #ads_grid .row > [class*="col-"] > .on-image-button.download-btn
+	.ads_grid .row > [class*="col-"] > .on-image-button[liked=false], .ads_grid .row > [class*="col-"] > .on-image-button.download-btn
 	{
 		opacity: 0;
 	}
 
-	#ads_grid .row > [class*="col-"]:hover > .on-image-button[liked=false], #ads_grid .row > [class*="col-"]:hover > .on-image-button.download-btn
+	.ads_grid .row > [class*="col-"]:hover > .on-image-button[liked=false], .ads_grid .row > [class*="col-"]:hover > .on-image-button.download-btn
 	{
 		opacity: 1;
 	}

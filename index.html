@@ -59,6 +59,10 @@
 							<a class="nav-link" :class="{ active: active_tab === 'listing' }" href="#/listing"> Listing </a>
 						</li>
 
+						<li class="nav-item">
+							<a class="nav-link" :class="{ active: active_tab === 'liked' }" href="#/liked"> Liked </a>
+						</li>
+
 					</ul>
 				</div>
 
@@ -104,7 +108,7 @@
 				</div>
 			</section>
 
-			<section id="ads_grid" :class="{ 'tab-active': active_tab === 'listing' }">
+			<section id="ads_grid" class="ads_grid" :class="{ 'tab-active': active_tab === 'listing' }">
 				<div class="container-fluid">
 					<div class="row gy-3" v-for="ads_row in ads">
 						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2" v-for="(ad, index) in ads_row" :class="{ 'observed_target': index === 'ad9' }">
@@ -116,7 +120,25 @@
 						</div>
 					</div>
 				</div>
-				<div class="d-flex justify-content-center" id="" style="width:100%;">
+				<div class="d-flex justify-content-center" style="width:100%;">
+					<div class="spinner-border invisible" role="status" id="ad_loading_spinner">
+						<span class="sr-only">Loading...</span>
+					</div>
+				</div>
+			</section>
+			<section id="liked_ads_grid" class="ads_grid" :class="{ 'tab-active': active_tab === 'liked' }">
+				<div class="container-fluid">
+					<div class="row gy-3">
+						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2" v-for="ad in liked_ads" >
+							<img :src="ad.img_url" alt="sample ad" @touchend="ad_touch_service(ad, $event)">
+							<button type="button" class="on-image-button" :liked="ad.liked" @click="ad_liked_toggle(ad)">
+							</button>
+							<a type="button" class="on-image-button download-btn" :href="ad.img_url" download>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-center" style="width:100%;">
 					<div class="spinner-border invisible" role="status" id="ad_loading_spinner">
 						<span class="sr-only">Loading...</span>
 					</div>
