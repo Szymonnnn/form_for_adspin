@@ -59,12 +59,12 @@ h1
 }
 
 
-#inputs, .ads_grid, #login_page, #sign_up_page
+.site-tab
 {
 	display: none;
 }
 
-:is(#inputs, .ads_grid, #login_page, #sign_up_page).tab-active
+.site-tab.tab-active
 {
 	display: block;
 }

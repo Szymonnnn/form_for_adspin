@@ -82,7 +82,7 @@
 		</header>
 
 		<main class="p-2 p-md-3 mx-xl-auto my-xl-4">
-			<section id="inputs" :class="{ 'tab-active': active_tab === 'form' }">
+			<section id="inputs" class="site-tab" :class="{ 'tab-active': active_tab === 'form' }">
 
 				<div class="container">
 					<form class="row needs-validation" novalidate method="post" @submit.prevent="ad_form_submit($event.target)">
@@ -120,7 +120,7 @@
 				</div>
 			</section>
 
-			<section id="ads_grid" class="ads_grid" :class="{ 'tab-active': active_tab === 'listing' }">
+			<section id="ads_grid"  class="site-tab ads_grid" :class="{ 'tab-active': active_tab === 'listing' }">
 				<div class="container-fluid">
 					<div class="row gy-3" v-for="ads_row in ads">
 						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2" v-for="(ad, index) in ads_row" :class="{ 'observed_target': index === 'ad9' }">
@@ -139,7 +139,7 @@
 				</div>
 			</section>
 
-			<section id="liked_ads_grid" class="ads_grid" :class="{ 'tab-active': active_tab === 'liked' }">
+			<section id="liked_ads_grid" class="site-tab ads_grid" :class="{ 'tab-active': active_tab === 'liked' }">
 				<div class="container-fluid">
 					<div class="row gy-3">
 						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2" v-for="ad in liked_ads" >
@@ -158,7 +158,7 @@
 				</div>
 			</section>
 
-			<section id="login_page" :class="{ 'tab-active': active_tab === 'login' }">
+			<section id="login_page" class="site-tab" :class="{ 'tab-active': active_tab === 'login' }">
 
 				<div class="container-fluid col-lg-6 offset-lg-3">
 					<form>
@@ -182,7 +182,7 @@
 									<label class="form-check-label" for="form2Example31"> Remember me </label>
 							  	</div>
 							</div>
-						
+
 							<div class="col">
 							  	<!-- Simple link -->
 							  	<a href="#!">Forgot password?</a>
@@ -199,8 +199,8 @@
 					</form>
 				</div>
 			</section>
-			
-			<section id="sign_up_page" :class="{ 'tab-active': active_tab === 'sign_up' }">
+
+			<section id="sign_up_page" class="site-tab" :class="{ 'tab-active': active_tab === 'sign_up' }">
 				<form class="col-lg-6 offset-lg-3">
 					<!-- 2 column grid layout with text inputs for the first and last names -->
 					<div class="row ">
@@ -217,19 +217,19 @@
 						</div>
 					  </div>
 					</div>
-		
+
 					<!-- Email input -->
 					<div class="form-outline mb-4">
 					  <input type="email" id="form3Example3" class="form-control" />
 					  <label class="form-label" for="form3Example3">Email address</label>
 					</div>
-		
+
 					<!-- Password input -->
 					<div class="form-outline mb-4">
 					  <input type="password" id="form3Example4" class="form-control" />
 					  <label class="form-label" for="form3Example4">Password</label>
 					</div>
-		
+
 					<!-- Submit button -->
 					<button type="submit" class="btn btn-primary btn-block mb-4">
 					  Sign up
