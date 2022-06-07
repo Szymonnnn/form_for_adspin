@@ -59,12 +59,12 @@ h1
 }
 
 
-#inputs, .ads_grid
+#inputs, .ads_grid, #login_page, #sign_up_page
 {
 	display: none;
 }
 
-:is(#inputs, .ads_grid).tab-active
+:is(#inputs, .ads_grid, #login_page, #sign_up_page).tab-active
 {
 	display: block;
 }
@@ -100,6 +100,52 @@ h1
 #generate-btn
 {
 	width: 100%;
+}
+
+/******* LOGIN *******/
+
+#login_page
+{
+	text-align: left;
+}
+
+#login_page img
+{
+	width: 100%;
+	height: auto;
+}
+
+#login_page p
+{
+	margin-bottom: 30px;
+}
+
+#login_page figcaption
+{
+	margin-top: 8px;
+}
+
+/******* SIGN UP *******/
+
+#sign_up_page
+{
+	text-align: left;
+}
+
+#sign_up_page img
+{
+	width: 100%;
+	height: auto;
+}
+
+#sign_up_page p
+{
+	margin-bottom: 30px;
+}
+
+#sign_up_page figcaption
+{
+	margin-top: 8px;
 }
 
 /******* LISTING *******/

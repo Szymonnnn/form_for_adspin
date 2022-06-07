@@ -19,7 +19,9 @@ const TABS =
 {
 	 form: () => console.log("form"),
 	 listing: () => console.log("listing"),
-	 liked: () => console.log("liked")
+	 liked: () => console.log("liked"),
+	 login: () => console.log("login"),
+	 sign_up: () => console.log("sign_up")
 }
 
 function dummy_ads_row()
