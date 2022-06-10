@@ -138,7 +138,11 @@ Vue.createApp(
 			{
 	            if (show)
 				{
-	                let height = this.$refs[ref].firstChild.clientHeight + 'px';
+					let height1 = this.$refs[ref].firstChild.clientHeight;
+					let height2 = this.$refs[ref].firstChild.nextSibling.clientHeight;
+					console.log(height1);
+					console.log(height2);
+	                let height = ( height1 == height2 ? height1 : height1 + height2 ) + 'px';
 	                this.navbar_style_object = { height }
 	            }
 	            else this.navbar_style_object = {}
