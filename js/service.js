@@ -246,7 +246,7 @@ Vue.createApp(
 					{
 	 	   				this.user_signed_in = false;
 					}
-					else if(response.data.email_already_in_use)
+					else
 					{
 						console.log("could not sign out");
 					}
