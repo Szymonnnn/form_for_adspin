@@ -64,11 +64,15 @@
 						</li>
 					</ul>
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item">
-							<a class="nav-link" :class="{ active: active_tab === 'login' }" href="#/login"> Sign in </a>
+						<li v-if="user_signed_in" class="nav-item">
+							<a class="nav-link" href="#/form" @click="sign_out">Sign out</a>
 						</li>
 
-						<li class="nav-item">
+						<li v-if="!user_signed_in" class="nav-item">
+							<a class="nav-link" :class="{ active: active_tab === 'login' }" href="#/login">Sign in</a>
+						</li>
+
+						<li v-if="!user_signed_in" class="nav-item">
 							<a class="nav-link" :class="{ active: active_tab === 'sign_up' }" href="#/sign_up"> Sign up </a>
 						</li>
 
@@ -85,7 +89,7 @@
 
 						<div class="col-md-6">
 							<label for="name_of_company" class="name">What you want to advertise?</label>
-							<input pattern=".{2,}" v-model="form_data.name_of_company" id="name_of_company" type="text" class="form-control" placeholder="adspin" name="name_of_company" required />
+							<input pattern=".{2,}" v-model="ad_form_data.name_of_company" id="name_of_company" type="text" class="form-control" placeholder="adspin" name="name_of_company" required />
 							<div class="invalid-feedback">
 								Please enter your company name - at least 2 characters
 							</div>
@@ -93,7 +97,7 @@
 
 						<div class="col-md-6">
 							<label for="key_features" class="name">Name three key features of your product</label>
-							<input  pattern="^(\w+(\s+\w+)*)([,.;](\s+\w+)+){2}$" v-model="form_data.key_features" id="key_features" type="text" class="form-control" placeholder="fast, fresh, effective" name="key_features" required />
+							<input  pattern="^(\w+(\s+\w+)*)([,.;](\s+\w+)+){2}$" v-model="ad_form_data.key_features" id="key_features" type="text" class="form-control" placeholder="fast, fresh, effective" name="key_features" required />
 							<div class="invalid-feedback">
 								Please enter three key features, separating with ", " (comma and space)
 							</div>
@@ -101,7 +105,7 @@
 
 						<div class="col-md-12">
 							<label for="description">Describe your company in a few words</label>
-							<textarea  pattern=".{15,160}" v-model="form_data.description" id="description" type="text" class="form-control" rows="8" name="description" placeholder="We are a web service that will make your ads spin faster than ever. Our team believes proper advertising is the key to succes. Give it a go and create a custom ad - it's free" required /></textarea>
+							<textarea  pattern=".{15,160}" v-model="ad_form_data.description" id="description" type="text" class="form-control" rows="8" name="description" placeholder="We are a web service that will make your ads spin faster than ever. Our team believes proper advertising is the key to succes. Give it a go and create a custom ad - it's free" required /></textarea>
 							<div class="invalid-feedback">
 								Please describe your company
 							</div>
@@ -123,7 +127,7 @@
 							<img :src="ad.img_url" alt="sample ad" @touchend="ad_touch_service(ad, $event)">
 							<button type="button" class="on-image-button" :liked="ad.liked" @click="ad_liked_toggle(ad)">
 							</button>
-							<a type="button" class="on-image-button download-btn" :href="ad.img_url" download>
+							<a v-if="user_signed_in" class="on-image-button download-btn" :href="ad.img_url" download>
 							</a>
 						</div>
 					</div>
@@ -142,7 +146,7 @@
 							<img :src="ad.img_url" alt="sample ad" @touchend="ad_touch_service(ad, $event)">
 							<button type="button" class="on-image-button" :liked="ad.liked" @click="ad_liked_toggle(ad)">
 							</button>
-							<a type="button" class="on-image-button download-btn" :href="ad.img_url" download>
+							<a v-if="user_signed_in" class="on-image-button download-btn" :href="ad.img_url" download>
 							</a>
 						</div>
 					</div>
@@ -154,61 +158,65 @@
 				</div>
 			</section>
 
-			<section id="login_page" class="site-tab" :class="{ 'tab-active': active_tab === 'login' }">
+			<section v-if="!user_signed_in" id="login_page" class="site-tab" :class="{ 'tab-active': active_tab === 'login' }">
 
 				<div class="container-fluid col-lg-6 offset-lg-3">
-					<form>
+					<form @submit.prevent="sign_in_submit($event.target)">
 						<!-- Email input -->
 						<div class="form-outline mb-4">
-							<input type="email" id="form2Example1" class="form-control" />
+							<input type="email" id="form2Example1" class="form-control" v-model="sign_in_form_data.email" />
 							<label class="form-label" for="form2Example1">Email address</label>
 						</div>
 
 						<!-- Password input -->
 						<div class="form-outline mb-4">
-    						<input type="password" id="form2Example2" class="form-control" />
+    						<input type="password" id="form2Example2" class="form-control" v-model="sign_in_form_data.password" />
     						<label class="form-label" for="form2Example2">Password</label>
+
+							<div class="invalid-feedback">
+								Email and password don't match.
+							</div>
   						</div>
 
 						<div class="row mb-4">
 							<div class="col d-flex justify-content-center">
 							  	<!-- Checkbox -->
 							  	<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
+									<input class="form-check-input" type="checkbox" value="" id="form2Example31"  v-model="sign_in_form_data.remember_me" />
 									<label class="form-check-label" for="form2Example31"> Remember me </label>
 							  	</div>
 							</div>
 
 							<div class="col">
 							  	<!-- Simple link -->
-							  	<a href="#!">Forgot password?</a>
+							  	<a href="#login" @click="forgot_password">Forgot password?</a>
 							</div>
 						</div>
 
 						<!-- Submit button -->
-  						<button type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+  						<button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
 
 						<div class="text-center">
-							<p>Not a member? <a  :class="{ active: active_tab === 'sign up' }" href="#/sign_up">Register</a></p>
+							<p>Not a member? <a :class="{ active: active_tab === 'sign up' }" href="#/sign_up">Register</a></p>
 						</div>
 
 					</form>
 				</div>
 			</section>
 
-			<section id="sign_up_page" class="site-tab" :class="{ 'tab-active': active_tab === 'sign_up' }">
-				<form class="col-lg-6 offset-lg-3">
+			<section v-if="!user_signed_in" id="sign_up_page" class="site-tab" :class="{ 'tab-active': active_tab === 'sign_up' }">
+				<form class="col-lg-6 offset-lg-3" @submit.prevent="sign_up_submit($event.target)">
 					<!-- 2 column grid layout with text inputs for the first and last names -->
 					<div class="row ">
 					  <div class="col-md-6 mb-4">
 						<div class="form-outline">
-						  <input type="text" id="form3Example1" class="form-control" />
+						  <input type="text" id="form3Example1" class="form-control" v-model="sign_up_form_data.first_name" />
 						  <label class="form-label" for="form3Example1">First name</label>
 						</div>
 					  </div>
 					  <div class="col-md-6 mb-4">
 						<div class="form-outline">
-						  <input type="text" id="form3Example2" class="form-control" />
+						  <input type="text" id="form3Example2" class="form-control" v-model="sign_up_form_data.last_name" />
 						  <label class="form-label" for="form3Example2">Last name</label>
 						</div>
 					  </div>
@@ -216,13 +224,17 @@
 
 					<!-- Email input -->
 					<div class="form-outline mb-4">
-					  <input type="email" id="form3Example3" class="form-control" />
+					  <input type="email" id="form3Example3" class="form-control" v-model="sign_up_form_data.email"  />
 					  <label class="form-label" for="form3Example3">Email address</label>
+
+					  <div class="invalid-feedback">
+						  Email address already in use.
+					  </div>
 					</div>
 
 					<!-- Password input -->
 					<div class="form-outline mb-4">
-					  <input type="password" id="form3Example4" class="form-control" />
+					  <input type="password" id="form3Example4" class="form-control" v-model="sign_up_form_data.password"  />
 					  <label class="form-label" for="form3Example4">Password</label>
 					</div>
 
@@ -230,6 +242,39 @@
 					<button type="submit" class="btn btn-primary btn-block mb-4">
 					  Sign up
 					</button>
+			</section>
+
+			<section v-if="!user_signed_in" id="password_recovery" class="site-tab" :class="{ 'tab-active': active_tab === 'password_recovery' }">
+
+					<p>We've sent you an <em>email</em> with a verification code.</p>
+				<div class="container-fluid col-lg-6 offset-lg-3">
+					<form @submit.prevent="password_recovery_submit($event.target)">
+						<!-- Email input -->
+						<div class="form-outline mb-4">
+							<input type="email" id="form4Example1" class="form-control" v-model="password_recovery_form.email" />
+							<label class="form-label" for="form4Example1">Email address</label>
+						</div>
+
+						<!-- New password input -->
+						<div class="form-outline mb-4">
+    						<input type="password" id="form4Example2" class="form-control" v-model="password_recovery_form.password" />
+    						<label class="form-label" for="form4Example2">New password</label>
+  						</div>
+
+						<!-- Verification code input -->
+						<div class="form-outline mb-4">
+    						<input type="text" id="form4Example3" class="form-control" v-model="password_recovery_form.verification_code" />
+    						<label class="form-label" for="form4Example3">Verification code</label>
+
+							<div class="invalid-feedback">
+								Invalid verification code.
+							</div>
+  						</div>
+
+						<!-- Submit button -->
+  						<button type="submit" class="btn btn-primary btn-block mb-4">Recover</button>
+					</form>
+				</div>
 			</section>
 
 		</main>

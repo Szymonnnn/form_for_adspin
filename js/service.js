@@ -1,6 +1,11 @@
 API_URL = "https://adspin.herokuapp.com/playground/";
 TOKEN_ENDPOINT = "sessionToken/";
 FORM_ENDPOINT = "submit/";
+SIGNIN_ENDPOINT = "signIn/";
+SIGNOUT_ENDPOINT = "signOut/";
+FORGOT_PASSWORD_ENDPOINT = "forgotPassword";
+PASSWORD_RECOVERY_ENDPOINT = "passwordRecovery";
+SIGNUP_ENDPOINT = "signUp/";
 AD_LOAD_ENDPINT = "getNewImages/";
 LIKED_AD_ENDPINT = "getLikedImages/";
 FEEDBACK_ENDPOINT = "liked/";
@@ -21,7 +26,8 @@ const TABS =
 	 listing: () => console.log("listing"),
 	 liked: () => console.log("liked"),
 	 login: () => console.log("login"),
-	 sign_up: () => console.log("sign_up")
+	 sign_up: () => console.log("sign_up"),
+	 password_recovery: () => console.log("password_recovery"),
 }
 
 function dummy_ads_row()
@@ -48,12 +54,35 @@ Vue.createApp(
 	data() {
   	return {
 		active_tab: 'form',
-		form_data:
+		session_token: '',
+		ad_form_data:
 		{
 			session_token: '',
 			name_of_company: '',
 			key_features: '',
 			description: '',
+		},
+		sign_in_form_data:
+		{
+			session_token: '',
+			email: '',
+			password: '',
+			remember_me: true,
+		},
+		sign_up_form_data:
+		{
+			session_token: '',
+			first_name: '',
+			last_name: '',
+			email: '',
+			password: ''
+		},
+		password_recovery_form:
+		{
+			session_token: '',
+			email: '',
+			password: '',
+			verification_code: ''
 		},
 		ads: [],
 		latest_tap_time: 0,
@@ -122,13 +151,13 @@ Vue.createApp(
 			   .get(API_URL + TOKEN_ENDPOINT)
 			   .then(response =>
 			   {
-				   this.form_data.session_token = response.data.session_token;
+				   this.session_token = response.data.session_token;
 				   axios.defaults.headers.post['X-CSRFToken'] = response.data.csrf_token;
 				   this.session_restored = response.data.session_restored;
 			   })
 			   .catch(error => console.log(error))
 
-			// this.form_data.session_token =  generate_token();
+			// this.session_token =  generate_token();
 		},
 		toggle_navbar_collapse(ref)
 		{
@@ -167,7 +196,8 @@ Vue.createApp(
 		async post_form()
 		{
 			console.log("posting the form from the user");
-			const response = await axios.post(API_URL + FORM_ENDPOINT, this.form_data);
+			this.ad_form_data.session_token = this.session_token;
+			const response = await axios.post(API_URL + FORM_ENDPOINT, this.ad_form_data);
 			console.log("API form response:")
 			console.log(response.data);
 			this.was_form_posted = true;
@@ -184,13 +214,106 @@ Vue.createApp(
 				this.update_listing(); // load ads
 			}
 		},
+		sign_in_submit(form)
+		{
+			this.sign_in_form_data.session_token = this.session_token;
+			axios
+			   .post(API_URL + SIGNIN_ENDPOINT, this.sign_in_form_data)
+			   .then(response =>
+			   {
+					if(response.data.sign_in_success)
+					{
+						this.user_signed_in = true;
+						window.location.hash = '/form'; // redirect
+						form.querySelector(".invalid-feedback").style.display = "none";
+					}
+					else if(response.data.incorrect_credentials)
+					{
+						console.log("login fail");
+						form.querySelector(".invalid-feedback").style.display = "block";
+					}
+			   })
+			   .catch(error => console.log(error))
+		},
+		sign_out()
+		{
+			data = { session_token: this.session_token};
+			axios
+			   .post(API_URL + SIGNOUT_ENDPOINT, data)
+			   .then(response =>
+			   {
+					if(response.data.sign_out_success)
+					{
+	 	   				this.user_signed_in = false;
+					}
+					else if(response.data.email_already_in_use)
+					{
+						console.log("could not sign out");
+					}
+			   })
+			   .catch(error => console.log(error))
+		},
+		forgot_password()
+		{
+			// setTimeout(()=>{window.location.hash = '/password_recovery'}, 10);
+			this.sign_in_form_data.session_token = this.session_token;
+			axios
+			   .post(API_URL + FORGOT_PASSWORD_ENDPOINT, this.sign_in_form_data)
+			   .then(response =>
+			   {
+					// email with verification code sent
+					window.location.hash = '/password_recovery'; // redirect
+			   })
+			   .catch(error => console.log(error))
+		},
+		password_recovery_submit(form)
+		{
+			this.password_recovery_form.session_token = this.session_token;
+			axios
+			   .post(API_URL + PASSWORD_RECOVERY_ENDPOINT, this.password_recovery_form)
+			   .then(response =>
+			   {
+					if(response.data.password_recovery_success)
+					{
+						window.location.hash = '/login'; // redirect
+						form.querySelector(".invalid-feedback").style.display = "none";
+					}
+					else
+					{
+						console.log("password recovery fail");
+						form.querySelector(".invalid-feedback").style.display = "block";
+					}
+			   })
+			   .catch(error => console.log(error))
+		},
+		sign_up_submit(form)
+		{
+			this.sign_up_form_data.session_token = this.session_token;
+			axios
+			   .post(API_URL + SIGNIN_ENDPOINT, this.sign_up_form_data)
+			   .then(response =>
+			   {
+					if(response.data.sign_up_success)
+					{
+						console.log("sign up succes");
+						form.querySelector(".invalid-feedback").style.display = "none";
+						window.location.hash = '/login'; // redirect
+					}
+					else if(response.data.email_already_in_use)
+					{
+						console.log("sign up fail - email already in use");
+						form.querySelector(".invalid-feedback").style.display = "block";
+					}
+			   })
+			   .catch(error => console.log(error))
+		},
 		update_listing()
 		{
 			// this.ads.push(dummy_ads_row());
 			// return;
 
 			this.ad_loading_spinner.classList.remove("invisible");
-			data = { session_token: this.form_data.session_token, size: 12 };
+			data = { session_token: this.session_token, size: 12 };
 			axios
 			   .post(API_URL + AD_LOAD_ENDPINT, data)
 			   .then(response =>
@@ -213,7 +336,7 @@ Vue.createApp(
 		{
 			data =
 			{
-				"session_token" : this.form_data.session_token,
+				"session_token" : this.session_token,
 				"id" : ad.id,
 				"liked" : ad.liked
 			}
@@ -240,7 +363,7 @@ Vue.createApp(
 			}
 
 			this.ad_loading_spinner.classList.remove("invisible");
-			data = { session_token: this.form_data.session_token };
+			data = { session_token: this.session_token };
 			axios
 			   .post(API_URL + LIKED_AD_ENDPINT, data)
 			   .then(response =>
