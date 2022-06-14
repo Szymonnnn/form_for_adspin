@@ -122,7 +122,7 @@ Vue.createApp(
 	{
 		computed_liked_ads()
 		{
-			return this.ads.reduce((acc, ads_row) => acc.concat(Object.entries(ads_row).filter((ad) => ad.liked)), []);
+			return this.ads.reduce((acc, ads_row) => acc.concat(Object.values(ads_row).filter((ad) => ad.liked)), []);
 		}
 	},
 	methods:
