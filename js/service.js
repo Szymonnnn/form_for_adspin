@@ -395,7 +395,22 @@ Vue.createApp(
 		        this.latest_tap_time = new Date().getTime();
 		    }
 		    this.previous_tap_target = ad.id;
-		}
+		},
+		// download_item (url)
+		{
+	    // axios
+		//		.get(url, { responseType: 'blob' })
+	    //   	.then(response =>
+		// 		{
+	    //     		const blob = new Blob([response.data], { type: 'image/avif' })
+	    //     		const link = document.createElement('a')
+	    //     		link.href = URL.createObjectURL(blob)
+	    //     		link.download = label
+	    //     		link.click()
+	    //     		URL.revokeObjectURL(link.href)
+	    //   	})
+		//	.catch(console.error)
+  		// } // temporalily out of use because of CORS
 	}
 
 }).mount('#app')

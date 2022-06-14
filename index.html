@@ -127,7 +127,7 @@
 							<img :src="ad.img_url" alt="sample ad" @touchend="ad_touch_service(ad, $event)">
 							<button type="button" class="on-image-button" :liked="ad.liked" @click="ad_liked_toggle(ad)">
 							</button>
-							<a v-if="user_signed_in" class="on-image-button download-btn" :href="ad.img_url" download>
+							<a v-if="user_signed_in" class="on-image-button download-btn" :href="ad.img_url" download target="_blank" rel="noopener noreferrer">
 							</a>
 						</div>
 					</div>
@@ -146,7 +146,7 @@
 							<img :src="ad.img_url" alt="sample ad" @touchend="ad_touch_service(ad, $event)">
 							<button type="button" class="on-image-button" :liked="ad.liked" @click="ad_liked_toggle(ad)">
 							</button>
-							<a v-if="user_signed_in" class="on-image-button download-btn" :href="ad.img_url" download>
+							<a v-if="user_signed_in" class="on-image-button download-btn" :href="ad.img_url" download target="_blank" rel="noopener noreferrer">
 							</a>
 						</div>
 					</div>
