@@ -122,7 +122,7 @@ Vue.createApp(
 	{
 		computed_liked_ads()
 		{
-			return this.ads.reduce((acc, ads_row) => acc.concat(ads_row.filter((ad) => ad.liked)), []);
+			return this.ads.reduce((acc, ads_row) => acc.concat(Object.values(ads_row).filter((ad) => ad.liked)), []);
 		}
 	},
 	methods:
@@ -290,7 +290,7 @@ Vue.createApp(
 		{
 			this.sign_up_form_data.session_token = this.session_token;
 			axios
-			   .post(API_URL + SIGNIN_ENDPOINT, this.sign_up_form_data)
+			   .post(API_URL + SIGNUP_ENDPOINT, this.sign_up_form_data)
 			   .then(response =>
 			   {
 					if(response.data.sign_up_success)
