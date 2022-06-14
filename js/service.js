@@ -93,6 +93,7 @@ Vue.createApp(
 		was_form_posted: false,
 		session_restored: false,
 		ad_loading_spinner: '',
+		liked_ad_loading_spinner: '',
 		ll_observer: '',
 		liked_ads: [],
 		user_signed_in: false
@@ -108,6 +109,7 @@ Vue.createApp(
 
 		this.get_session_token();
 		this.ad_loading_spinner = document.getElementById('ad_loading_spinner');
+		this.liked_ad_loading_spinner = document.getElementById('liked_ad_loading_spinner');
 		this.on_hash_change();
 
 	    let options =
@@ -362,13 +364,13 @@ Vue.createApp(
 				return;
 			}
 
-			this.ad_loading_spinner.classList.remove("invisible");
+			this.liked_ad_loading_spinner.classList.remove("invisible");
 			data = { session_token: this.session_token };
 			axios
 			   .post(API_URL + LIKED_AD_ENDPINT, data)
 			   .then(response =>
 			   {
-	   				this.ad_loading_spinner.classList.add("invisible");
+	   				this.liked_ad_loading_spinner.classList.add("invisible");
 				   	console.log(response.data);
 				    this.liked_ads = response.data;
 			   })
