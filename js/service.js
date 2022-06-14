@@ -290,7 +290,7 @@ Vue.createApp(
 		{
 			this.sign_up_form_data.session_token = this.session_token;
 			axios
-			   .post(API_URL + SIGNIN_ENDPOINT, this.sign_up_form_data)
+			   .post(API_URL + SIGNUP_ENDPOINT, this.sign_up_form_data)
 			   .then(response =>
 			   {
 					if(response.data.sign_up_success)
