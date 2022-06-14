@@ -397,7 +397,7 @@ Vue.createApp(
 		    this.previous_tap_target = ad.id;
 		},
 		// download_item (url)
-		{
+		// {
 	    // axios
 		//		.get(url, { responseType: 'blob' })
 	    //   	.then(response =>
