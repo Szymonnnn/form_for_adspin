@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>adspin</title>
+	<meta http-equiv="X-Ua-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/css/fileinput.min.css" media="all" type="text/css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=latin-ext" rel="stylesheet">
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/main.css">
+
+	<link rel="shortcut icon" href="icons/favi.png">
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+	<script src="js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/fileinput.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script src="https://unpkg.com/vue@3"></script>
+	<!-- <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script> -->
+
+
+</head>
+
+<body>
+
+	<div id="app">
+		<header class="navbar-container">
+			<nav class="navbar navbar-dark bg-color-blue navbar-expand-sm">
+
+				<a class="navbar-brand" href="#"><img src="img/logo_blank_circle.png" width="30" height="30" class="d-inline-block mr-1 align-bottom" alt=""> adspin</a>
+
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji" id="navbar-tg-btn" @click.stop="toggle_navbar_collapse('main_menu')">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="navbar-collapse" :class="navbar_class_array" :style="navbar_style_object" id="mainmenu" ref="main_menu">
+
+					<ul class="navbar-nav mr-auto">
+
+						<li class="nav-item">
+							<a class="nav-link" :class="{ active: active_tab === 'form' }" href="#/form"> Form </a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" :class="{ active: active_tab === 'listing' }" href="#/listing"> Listing </a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" :class="{ active: active_tab === 'liked' }" href="#/liked"> Liked </a>
+						</li>
+					</ul>
+					<ul class="navbar-nav ml-auto">
+						<li v-if="user_signed_in" class="nav-item">
+							<a class="nav-link" href="#/form" @click="sign_out">Sign out</a>
+						</li>
+
+						<li v-if="!user_signed_in" class="nav-item">
+							<a class="nav-link" :class="{ active: active_tab === 'login' }" href="#/login">Sign in</a>
+						</li>
+
+						<li v-if="!user_signed_in" class="nav-item">
+							<a class="nav-link" :class="{ active: active_tab === 'sign_up' }" href="#/sign_up"> Sign up </a>
+						</li>
+
+					</ul>
+				</div>
+			</nav>
+		</header>
+
+		<main class="p-2 p-md-3 mx-xl-auto my-xl-4">
+			<section id="inputs" class="site-tab" :class="{ 'tab-active': active_tab === 'form' }">
+
+				<div class="container">
+					<form class="row needs-validation" novalidate method="post" @submit.prevent="ad_form_submit($event.target)">
+
+						<div class="col-md-6">
+							<label for="name_of_company" class="name">What you want to advertise?</label>
+							<input pattern=".{2,}" v-model="ad_form_data.name_of_company" id="name_of_company" type="text" class="form-control" placeholder="adspin" name="name_of_company" required />
+							<div class="invalid-feedback">
+								Please enter your company name - at least 2 characters
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<label for="key_features" class="name">Name three key features of your product</label>
+							<input  pattern="^(\w+(\s+\w+)*)([,.;](\s+\w+)+){2}$" v-model="ad_form_data.key_features" id="key_features" type="text" class="form-control" placeholder="fast, fresh, effective" name="key_features" required />
+							<div class="invalid-feedback">
+								Please enter three key features, separating with ", " (comma and space)
+							</div>
+						</div>
+
+						<div class="col-md-12">
+							<label for="description">Describe your company in a few words</label>
+							<textarea  pattern=".{15,160}" v-model="ad_form_data.description" id="description" type="text" class="form-control" rows="8" name="description" placeholder="We are a web service that will make your ads spin faster than ever. Our team believes proper advertising is the key to succes. Give it a go and create a custom ad - it's free" required /></textarea>
+							<div class="invalid-feedback">
+								Please describe your company
+							</div>
+						</div>
+
+
+						<div class="col-12 col-md-2">
+							<button id="generate-btn" type="submit" class="btn btn-primary">Generate</button>
+						</div>
+
+					</form>
+				</div>
+			</section>
+
+			<section id="ads_grid"  class="site-tab ads_grid" :class="{ 'tab-active': active_tab === 'listing' }">
+				<div class="container-fluid">
+					<div class="row gy-3" v-for="ads_row in ads">
+						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2" v-for="(ad, index) in ads_row" :class="{ 'observed_target': index === 'ad9' }">
+							<img :src="ad.img_url" alt="sample ad" @touchend="ad_touch_service(ad, $event)">
+							<button type="button" class="on-image-button" :liked="ad.liked" @click="ad_liked_toggle(ad)">
+							</button>
+							<a v-if="user_signed_in" class="on-image-button download-btn" :href="ad.img_url" download target="_blank" rel="noopener noreferrer">
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-center" style="width:100%;">
+					<div class="spinner-border invisible" role="status" id="ad_loading_spinner">
+						<span class="sr-only">Loading...</span>
+					</div>
+				</div>
+			</section>
+
+			<section id="liked_ads_grid" class="site-tab ads_grid" :class="{ 'tab-active': active_tab === 'liked' }">
+				<div class="container-fluid">
+					<div class="row gy-3">
+						<div class="col-12 col-sm-6 col-md-4 col-lg-3 px-1 pb-2" v-for="ad in liked_ads" >
+							<img :src="ad.img_url" alt="sample ad" @touchend="ad_touch_service(ad, $event)">
+							<button type="button" class="on-image-button" :liked="ad.liked" @click="ad_liked_toggle(ad)">
+							</button>
+							<a v-if="user_signed_in" class="on-image-button download-btn" :href="ad.img_url" download target="_blank" rel="noopener noreferrer">
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-center" style="width:100%;">
+					<div class="spinner-border invisible" role="status" id="liked_ad_loading_spinner">
+						<span class="sr-only">Loading...</span>
+					</div>
+				</div>
+			</section>
+
+			<section v-if="!user_signed_in" id="login_page" class="site-tab" :class="{ 'tab-active': active_tab === 'login' }">
+
+				<div class="container-fluid col-lg-6 offset-lg-3">
+					<form @submit.prevent="sign_in_submit($event.target)">
+						<!-- Email input -->
+						<div class="form-outline mb-4">
+							<input type="email" id="form2Example1" class="form-control" v-model="sign_in_form_data.email" />
+							<label class="form-label" for="form2Example1">Email address</label>
+						</div>
+
+						<!-- Password input -->
+						<div class="form-outline mb-4">
+    						<input type="password" id="form2Example2" class="form-control" v-model="sign_in_form_data.password" />
+    						<label class="form-label" for="form2Example2">Password</label>
+
+							<div class="invalid-feedback">
+								Email and password don't match.
+							</div>
+  						</div>
+
+						<div class="row mb-4">
+							<div class="col d-flex justify-content-center">
+							  	<!-- Checkbox -->
+							  	<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="form2Example31"  v-model="sign_in_form_data.remember_me" />
+									<label class="form-check-label" for="form2Example31"> Remember me </label>
+							  	</div>
+							</div>
+
+							<div class="col">
+							  	<!-- Simple link -->
+							  	<a href="#login" @click="forgot_password">Forgot password?</a>
+							</div>
+						</div>
+
+						<!-- Submit button -->
+  						<button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+
+						<div class="text-center">
+							<p>Not a member? <a :class="{ active: active_tab === 'sign up' }" href="#/sign_up">Register</a></p>
+						</div>
+
+					</form>
+				</div>
+			</section>
+
+			<section v-if="!user_signed_in" id="sign_up_page" class="site-tab" :class="{ 'tab-active': active_tab === 'sign_up' }">
+				<form class="col-lg-6 offset-lg-3" @submit.prevent="sign_up_submit($event.target)">
+					<!-- 2 column grid layout with text inputs for the first and last names -->
+					<div class="row ">
+					  <div class="col-md-6 mb-4">
+						<div class="form-outline">
+						  <input type="text" id="form3Example1" class="form-control" v-model="sign_up_form_data.first_name" />
+						  <label class="form-label" for="form3Example1">First name</label>
+						</div>
+					  </div>
+					  <div class="col-md-6 mb-4">
+						<div class="form-outline">
+						  <input type="text" id="form3Example2" class="form-control" v-model="sign_up_form_data.last_name" />
+						  <label class="form-label" for="form3Example2">Last name</label>
+						</div>
+					  </div>
+					</div>
+
+					<!-- Email input -->
+					<div class="form-outline mb-4">
+					  <input type="email" id="form3Example3" class="form-control" v-model="sign_up_form_data.email"  />
+					  <label class="form-label" for="form3Example3">Email address</label>
+
+					  <div class="invalid-feedback">
+						  Email address already in use.
+					  </div>
+					</div>
+
+					<!-- Password input -->
+					<div class="form-outline mb-4">
+					  <input type="password" id="form3Example4" class="form-control" v-model="sign_up_form_data.password"  />
+					  <label class="form-label" for="form3Example4">Password</label>
+					</div>
+
+					<!-- Submit button -->
+					<button type="submit" class="btn btn-primary btn-block mb-4">
+					  Sign up
+					</button>
+			</section>
+
+			<section v-if="!user_signed_in" id="password_recovery" class="site-tab" :class="{ 'tab-active': active_tab === 'password_recovery' }">
+
+					<p>We've sent you an <em>email</em> with a verification code.</p>
+				<div class="container-fluid col-lg-6 offset-lg-3">
+					<form @submit.prevent="password_recovery_submit($event.target)">
+						<!-- Email input -->
+						<div class="form-outline mb-4">
+							<input type="email" id="form4Example1" class="form-control" v-model="password_recovery_form.email" />
+							<label class="form-label" for="form4Example1">Email address</label>
+						</div>
+
+						<!-- New password input -->
+						<div class="form-outline mb-4">
+    						<input type="password" id="form4Example2" class="form-control" v-model="password_recovery_form.password" />
+    						<label class="form-label" for="form4Example2">New password</label>
+  						</div>
+
+						<!-- Verification code input -->
+						<div class="form-outline mb-4">
+    						<input type="text" id="form4Example3" class="form-control" v-model="password_recovery_form.verification_code" />
+    						<label class="form-label" for="form4Example3">Verification code</label>
+
+							<div class="invalid-feedback">
+								Invalid verification code.
+							</div>
+  						</div>
+
+						<!-- Submit button -->
+  						<button type="submit" class="btn btn-primary btn-block mb-4">Recover</button>
+					</form>
+				</div>
+			</section>
+
+		</main>
+	</div>
+</body>
+
+<script src="js/service.js"></script>
+
+</html>

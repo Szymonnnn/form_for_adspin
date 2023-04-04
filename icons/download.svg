@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg height="100%" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="0 0 1024 1024" width="100%" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g>
+        <path d="M768 256L768 503.267L768 768L256 768L256 256" fill="none" fill-rule="evenodd" opacity="1" stroke="#fdfeff" stroke-linecap="round" stroke-linejoin="round" stroke-width="60"/>
+        <path d="M511.5 128C511.5 128 512.25 416 512.5 512" fill="none" fill-rule="evenodd" opacity="1" stroke="#fdfeff" stroke-linecap="round" stroke-linejoin="round" stroke-width="60"/>
+        <path d="M512 512C630.207 394.243 640 384 640 384" fill="none" fill-rule="evenodd" opacity="1" stroke="#fdfeff" stroke-linecap="round" stroke-linejoin="round" stroke-width="60"/>
+        <path d="M512 512C393.793 394.243 384 384 384 384" fill="none" fill-rule="evenodd" opacity="1" stroke="#fdfeff" stroke-linecap="round" stroke-linejoin="round" stroke-width="60"/>
+    </g>
+</svg>

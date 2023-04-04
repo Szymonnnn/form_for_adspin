@@ -1,0 +1,256 @@
+/******* COLORS *******/
+:root
+{
+	--whiter:		#fdfeff;
+  	--almost_black:	#303030;
+  	--dark_blue:	#0C3D83;
+  	--blue: 		#0F71D9;
+  	--light_blue:	#4994DB;
+	--light_green:	#C0D06F;
+}
+
+
+/******* GENERAL *******/
+body
+{
+	background-color: var(--light_blue);
+	color: var(--almost_black);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 17px;
+}
+
+main
+{
+	background-color: var(--whiter);
+	max-width: var(--breakpoint-xl);
+}
+
+h1
+{
+	font-size: 36px;
+	font-weight: 400;
+	color: var(--light_green);
+	margin: 20px;
+}
+
+.navbar-container
+{
+	position: sticky;
+	position: -webkit-sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.navbar
+{
+	min-height: 57px;
+}
+
+.btn-primary.disabled, .btn-primary:disabled
+{
+	opacity: 1;
+	background-color: var(--light_blue);
+	border-color: var(--light_blue);
+}
+
+.bg-color-blue
+{
+	background-color: var(--blue);
+}
+
+
+.site-tab
+{
+	display: none;
+}
+
+.site-tab.tab-active
+{
+	display: block;
+}
+
+/******* FORM *******/
+
+#inputs
+{
+	text-align: left;
+}
+
+#inputs img
+{
+	width: 100%;
+	height: auto;
+}
+
+#inputs p
+{
+	margin-bottom: 30px;
+}
+
+#inputs figcaption
+{
+	margin-top: 8px;
+}
+
+.name
+{
+	text-align: left;
+}
+
+#generate-btn
+{
+	width: 100%;
+}
+
+/******* LOGIN *******/
+
+#login_page
+{
+	text-align: left;
+}
+
+#login_page img
+{
+	width: 100%;
+	height: auto;
+}
+
+#login_page p
+{
+	margin-bottom: 30px;
+}
+
+#login_page figcaption
+{
+	margin-top: 8px;
+}
+
+/******* SIGN UP *******/
+
+#sign_up_page
+{
+	text-align: left;
+}
+
+#sign_up_page img
+{
+	width: 100%;
+	height: auto;
+}
+
+#sign_up_page p
+{
+	margin-bottom: 30px;
+}
+
+#sign_up_page figcaption
+{
+	margin-top: 8px;
+}
+
+/******* LISTING *******/
+
+.ads_grid .row > [class*="col-"] > img
+{
+	/* display: inline-block; */
+	/* max-width: 100%; */
+	/* max-height: 100%; */
+	width: 100%;
+}
+
+#ad_loading_spinner.invisible
+{
+	display: none;
+}
+
+.on-image-button
+{
+	display: block;
+	position: absolute;
+	top: 0;
+	padding: 0.5rem;
+
+	mix-blend-mode: exclusion;
+
+	background: none;
+	border: none;
+}
+
+.on-image-button::after
+{
+	display: block;
+	width: 3rem;
+}
+
+.on-image-button:focus
+{
+	outline: none;
+}
+
+.on-image-button[liked=false]::after
+{
+	/* content: "♡"; */
+	content: url("../icons/heart-contour.svg");
+}
+
+.on-image-button[liked=true]::after
+{
+	/* content: "♥︎"; */
+	content: url("../icons/heart-fill.svg");
+}
+
+.on-image-button.download-btn
+{
+	right: 0;
+}
+
+.on-image-button.download-btn::after
+{
+	content: url("../icons/download.svg");
+}
+
+.on-image-button.download-btn:focus::after, .on-image-button.download-btn:visited::after
+{
+	content: url("../icons/downloaded.svg");
+}
+
+
+@media (hover: none)
+{
+	.ads_grid .row > [class*="col-"] > .on-image-button[liked=false]
+	{
+		opacity: 1;
+		pointer-events: none;
+	}
+	.ads_grid .row > [class*="col-"] > .on-image-button
+	{
+		pointer-events: none;
+	}
+	.ads_grid .row > [class*="col-"] > .on-image-button.download-btn
+	{
+		opacity: 0;
+		pointer-events: none;
+	}
+	.ads_grid .row > [class*="col-"]
+	{
+		touch-action: pinch-zoom pan-x pan-y;
+	}
+}
+
+@media (hover: hover)
+{
+	.ads_grid .row > [class*="col-"]:hover
+	{
+		opacity: 0.8;
+	}
+
+	.ads_grid .row > [class*="col-"] > .on-image-button[liked=false], .ads_grid .row > [class*="col-"] > .on-image-button.download-btn
+	{
+		opacity: 0;
+	}
+
+	.ads_grid .row > [class*="col-"]:hover > .on-image-button[liked=false], .ads_grid .row > [class*="col-"]:hover > .on-image-button.download-btn
+	{
+		opacity: 1;
+	}
+}
